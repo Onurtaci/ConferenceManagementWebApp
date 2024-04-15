@@ -31,9 +31,7 @@ public class Conference
     [Required]
     public ApplicationUser Organizer { get; set; }
 
-    [Required]
-    public ICollection<Session>? Sessions { get; set; }
+    public ICollection<Session> Sessions { get; set; }
 
-    [Required]
-    public ICollection<Feedback>? Feedbacks { get; set; }
+    public ICollection<Feedback> Feedbacks { get; set; }
 }

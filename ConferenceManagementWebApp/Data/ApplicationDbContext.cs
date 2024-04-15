@@ -25,9 +25,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.Venue).IsRequired().HasMaxLength(50);
             entity.Property(e => e.StartTime).IsRequired();
             entity.Property(e => e.EndTime).IsRequired();
-            entity.HasOne(e => e.Organizer).WithMany().IsRequired();
-            entity.HasMany(e => e.Sessions).WithOne().IsRequired();
-            entity.HasMany(e => e.Feedbacks).WithOne().IsRequired();
+            entity.HasOne(e => e.Organizer);
+            entity.HasMany(e => e.Sessions);
+            entity.HasMany(e => e.Feedbacks);
         });
 
         modelBuilder.Entity<Session>(entity =>
@@ -40,9 +40,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.Title).IsRequired().HasMaxLength(50);
             entity.Property(e => e.Topic).IsRequired().HasMaxLength(50);
             entity.Property(e => e.PresentationType).IsRequired().HasMaxLength(50);
-            entity.HasOne(e => e.Presenter).WithMany().IsRequired();
-            entity.HasOne(e => e.Conference).WithMany().IsRequired();
-            entity.HasMany(e => e.Paper).WithOne();
+            entity.HasOne(e => e.Presenter);
+
+            entity.HasOne(e => e.Conference)
+                .WithMany()
+                .HasForeignKey(e => e.ConferenceId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasMany(e => e.Paper);
         });
 
         modelBuilder.Entity<UserConference>(entity =>
@@ -52,8 +57,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.Id).IsRequired();
             entity.Property(e => e.AttendeeId).IsRequired();
             entity.Property(e => e.ConferenceId).IsRequired();
-            entity.HasOne(e => e.Attendee).WithMany().IsRequired();
-            entity.HasOne(e => e.Conference).WithMany().IsRequired();
+            entity.HasOne(e => e.Attendee);
+
+            entity.HasOne(e => e.Conference)
+              .WithMany()
+              .HasForeignKey(e => e.ConferenceId)
+              .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Feedback>(entity =>
@@ -61,11 +70,16 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.ToTable("Feedbacks");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).IsRequired();
+            entity.Property(e => e.AttendeeId).IsRequired();
             entity.Property(e => e.ConferenceId).IsRequired();
             entity.Property(e => e.Rating).IsRequired();
             entity.Property(e => e.Comment).HasMaxLength(500);
-            entity.HasOne(e => e.Attendee).WithMany().IsRequired();
-            entity.HasOne(e => e.Conference).WithMany().IsRequired();
+            entity.HasOne(e => e.Attendee);
+
+            entity.HasOne(e => e.Conference)
+              .WithMany()
+              .HasForeignKey(e => e.ConferenceId)
+              .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Paper>(entity =>
@@ -77,8 +91,30 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.SessionId).IsRequired();
             entity.Property(e => e.Title).IsRequired().HasMaxLength(50);
             entity.Property(e => e.Abstract).HasMaxLength(500);
-            entity.HasOne(e => e.Author).WithMany().IsRequired();
-            entity.HasOne(e => e.Session).WithMany().IsRequired();
+            entity.HasOne(e => e.Author);
+
+            entity.HasOne(e => e.Session)
+              .WithMany()
+              .HasForeignKey(e => e.SessionId)
+              .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Review>(entity =>
+        {
+            entity.ToTable("Reviews");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).IsRequired();
+            entity.Property(e => e.ReviewerId).IsRequired();
+            entity.Property(e => e.PaperId).IsRequired();
+            entity.Property(e => e.Score).IsRequired();
+            entity.Property(e => e.Recommendation).IsRequired();
+            entity.Property(e => e.Comments).HasMaxLength(500);
+            entity.HasOne(e => e.Reviewer);
+
+            entity.HasOne(e => e.Paper)
+              .WithMany()
+              .HasForeignKey(e => e.PaperId)
+              .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }
