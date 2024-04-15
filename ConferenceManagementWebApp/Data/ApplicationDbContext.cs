@@ -88,7 +88,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).IsRequired();
             entity.Property(e => e.AuthorId).IsRequired();
-            entity.Property(e => e.SessionId).IsRequired();
+            entity.Property(e => e.SessionId).IsRequired(); // will change this code
             entity.Property(e => e.Title).IsRequired().HasMaxLength(50);
             entity.Property(e => e.Abstract).HasMaxLength(500);
             entity.HasOne(e => e.Author);

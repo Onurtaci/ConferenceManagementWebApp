@@ -1,13 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ConferenceManagementWebApp.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace ConferenceManagementWebApp.Models;
-
-public enum Recommendation
-{
-    Accept,
-    Revise,
-    Reject
-}
 
 public class Review
 {

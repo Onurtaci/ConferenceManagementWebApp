@@ -34,6 +34,4 @@ public class Session
     public Conference Conference { get; set; }
 
     public ICollection<Paper> Paper { get; set; }
-
-
 }

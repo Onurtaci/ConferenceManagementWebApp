@@ -1,15 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ConferenceManagementWebApp.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ConferenceManagementWebApp.Models;
-
-public enum Status
-{
-    Submitted,
-    Under_Review,
-    Accepted,
-    Rejected
-}
 
 public class Paper
 {
