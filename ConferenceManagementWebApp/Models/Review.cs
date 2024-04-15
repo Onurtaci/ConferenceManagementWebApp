@@ -10,9 +10,6 @@ public class Review
     public string Id { get; set; }
 
     [Required]
-    public string ReviewerId { get; set; }
-
-    [Required]
     public string PaperId { get; set; }
 
     [Range(0, 100, ErrorMessage = "The score must be in the range of 0-100.")]
@@ -20,7 +17,7 @@ public class Review
 
     public Recommendation? Recommendation { get; set; }
 
-    public string? Comments { get; set; }
+    public string? Comment { get; set; }
 
     [Required]
     public ApplicationUser Reviewer { get; set; }

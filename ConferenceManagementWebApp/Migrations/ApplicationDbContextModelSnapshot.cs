@@ -151,9 +151,6 @@ namespace ConferenceManagementWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ConferenceId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
@@ -162,8 +159,6 @@ namespace ConferenceManagementWebApp.Migrations
                     b.HasIndex("AttendeeId");
 
                     b.HasIndex("ConferenceId");
-
-                    b.HasIndex("ConferenceId1");
 
                     b.ToTable("Feedbacks", (string)null);
                 });
@@ -175,8 +170,8 @@ namespace ConferenceManagementWebApp.Migrations
 
                     b.Property<string>("Abstract")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("AuthorId")
                         .IsRequired()
@@ -195,9 +190,6 @@ namespace ConferenceManagementWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("SessionId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -212,8 +204,6 @@ namespace ConferenceManagementWebApp.Migrations
 
                     b.HasIndex("SessionId");
 
-                    b.HasIndex("SessionId1");
-
                     b.ToTable("Papers", (string)null);
                 });
 
@@ -222,7 +212,7 @@ namespace ConferenceManagementWebApp.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Comments")
+                    b.Property<string>("Comment")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -230,10 +220,8 @@ namespace ConferenceManagementWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("PaperId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Recommendation")
+                        .HasMaxLength(50)
                         .HasColumnType("int");
 
                     b.Property<string>("ReviewerId")
@@ -241,16 +229,12 @@ namespace ConferenceManagementWebApp.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("Score")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PaperId");
-
-                    b.HasIndex("PaperId1")
-                        .IsUnique()
-                        .HasFilter("[PaperId1] IS NOT NULL");
+                    b.HasIndex("PaperId")
+                        .IsUnique();
 
                     b.HasIndex("ReviewerId");
 
@@ -264,9 +248,6 @@ namespace ConferenceManagementWebApp.Migrations
 
                     b.Property<string>("ConferenceId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConferenceId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PresentationType")
@@ -292,33 +273,9 @@ namespace ConferenceManagementWebApp.Migrations
 
                     b.HasIndex("ConferenceId");
 
-                    b.HasIndex("ConferenceId1");
-
                     b.HasIndex("PresenterId");
 
                     b.ToTable("Sessions", (string)null);
-                });
-
-            modelBuilder.Entity("ConferenceManagementWebApp.Models.UserConference", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AttendeeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConferenceId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AttendeeId");
-
-                    b.HasIndex("ConferenceId");
-
-                    b.ToTable("UserConferences", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -474,14 +431,10 @@ namespace ConferenceManagementWebApp.Migrations
                         .IsRequired();
 
                     b.HasOne("ConferenceManagementWebApp.Models.Conference", "Conference")
-                        .WithMany()
+                        .WithMany("Feedbacks")
                         .HasForeignKey("ConferenceId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("ConferenceManagementWebApp.Models.Conference", null)
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("ConferenceId1");
 
                     b.Navigation("Attendee");
 
@@ -497,14 +450,10 @@ namespace ConferenceManagementWebApp.Migrations
                         .IsRequired();
 
                     b.HasOne("ConferenceManagementWebApp.Models.Session", "Session")
-                        .WithMany()
+                        .WithMany("Paper")
                         .HasForeignKey("SessionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("ConferenceManagementWebApp.Models.Session", null)
-                        .WithMany("Paper")
-                        .HasForeignKey("SessionId1");
 
                     b.Navigation("Author");
 
@@ -514,14 +463,10 @@ namespace ConferenceManagementWebApp.Migrations
             modelBuilder.Entity("ConferenceManagementWebApp.Models.Review", b =>
                 {
                     b.HasOne("ConferenceManagementWebApp.Models.Paper", "Paper")
-                        .WithMany()
-                        .HasForeignKey("PaperId")
+                        .WithOne("Review")
+                        .HasForeignKey("ConferenceManagementWebApp.Models.Review", "PaperId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("ConferenceManagementWebApp.Models.Paper", null)
-                        .WithOne("Review")
-                        .HasForeignKey("ConferenceManagementWebApp.Models.Review", "PaperId1");
 
                     b.HasOne("ConferenceManagementWebApp.Models.ApplicationUser", "Reviewer")
                         .WithMany()
@@ -537,14 +482,10 @@ namespace ConferenceManagementWebApp.Migrations
             modelBuilder.Entity("ConferenceManagementWebApp.Models.Session", b =>
                 {
                     b.HasOne("ConferenceManagementWebApp.Models.Conference", "Conference")
-                        .WithMany()
+                        .WithMany("Sessions")
                         .HasForeignKey("ConferenceId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("ConferenceManagementWebApp.Models.Conference", null)
-                        .WithMany("Sessions")
-                        .HasForeignKey("ConferenceId1");
 
                     b.HasOne("ConferenceManagementWebApp.Models.ApplicationUser", "Presenter")
                         .WithMany()
@@ -555,25 +496,6 @@ namespace ConferenceManagementWebApp.Migrations
                     b.Navigation("Conference");
 
                     b.Navigation("Presenter");
-                });
-
-            modelBuilder.Entity("ConferenceManagementWebApp.Models.UserConference", b =>
-                {
-                    b.HasOne("ConferenceManagementWebApp.Models.ApplicationUser", "Attendee")
-                        .WithMany()
-                        .HasForeignKey("AttendeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ConferenceManagementWebApp.Models.Conference", "Conference")
-                        .WithMany()
-                        .HasForeignKey("ConferenceId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Attendee");
-
-                    b.Navigation("Conference");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

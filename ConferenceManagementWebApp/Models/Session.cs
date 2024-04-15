@@ -10,12 +10,6 @@ public class Session
     public string Id { get; set; }
 
     [Required]
-    public string PresenterId { get; set; }
-
-    [Required]
-    public string ConferenceId { get; set; }
-
-    [Required]
     [StringLength(50)]
     public string Title { get; set; }
 

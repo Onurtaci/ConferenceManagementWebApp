@@ -9,12 +9,6 @@ public class Feedback
     public string Id { get; set; }
 
     [Required]
-    public string AttendeeId { get; set; }
-
-    [Required]
-    public string ConferenceId { get; set; }
-
-    [Required]
     public int Rating { get; set; }
 
     [StringLength(500)]

@@ -11,12 +11,6 @@ public class Paper
     public string Id { get; set; }
 
     [Required]
-    public string SessionId { get; set; }
-
-    [Required]
-    public string AuthorId { get; set; }
-
-    [Required]
     [StringLength(50)]
     public string Title { get; set; }
 
