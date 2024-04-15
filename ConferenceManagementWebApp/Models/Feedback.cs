@@ -15,10 +15,10 @@ public class Feedback
     public string ConferenceId { get; set; }
 
     [Required]
-    public int Rate { get; set; }
+    public int Rating { get; set; }
 
     [StringLength(500)]
-    public string? Comments { get; set; }
+    public string? Comment { get; set; }
 
     [Required]
     public ApplicationUser Attendee { get; set; }
