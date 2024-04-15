@@ -1,5 +1,5 @@
 ﻿using ConferenceManagementWebApp.Models;
-using ConferenceManagementWebApp.ViewModels;
+using ConferenceManagementWebApp.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +25,7 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(LoginViewModel model)
+    public async Task<IActionResult> Login(AccountLoginViewModel model)
     {
         if (ModelState.IsValid)
         {
@@ -45,7 +45,7 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Register(RegisterViewModel model)
+    public async Task<IActionResult> Register(AccountRegisterViewModel model)
     {
         if (ModelState.IsValid)
         {

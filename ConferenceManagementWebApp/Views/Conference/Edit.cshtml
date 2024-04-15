@@ -1,0 +1,49 @@
+﻿@using ConferenceManagementWebApp.ViewModels.ConferenceViewModels;
+
+@model ConferenceEditViewModel;
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="row d-flex align-items-center justify-content-center">
+    <div class="col-md-5 card p-4">
+        <h2 class="text-center text-info">Edit conference.</h2>
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-1">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" placeholder="Enter new conference name" value="@Model.Title" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control" placeholder="Enter new conference description" rows="3">@Model.Description</textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="Venue"></label>
+                <input asp-for="Venue" class="form-control" placeholder="Enter new conference location" value="@Model.Venue" />
+                <span asp-validation-for="Venue" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="StartTime"></label>
+                <input asp-for="StartTime" class="form-control" type="date" value="@Model.StartTime.ToString("f")" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="EndTime"></label>
+                <input asp-for="EndTime" class="form-control" type="date" value="@Model.EndTime.ToString("f")" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-6">
+                    <a asp-controller="Conference" asp-action="Index" class="btn btn-secondary">Back</a>
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-primary btn-md float-end">Save Changes</button>
+                </div>
+        </form>
+    </div>
+</div>

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ConferenceManagementWebApp.ViewModels;
+namespace ConferenceManagementWebApp.ViewModels.AccountViewModels;
 
-public class LoginViewModel
+public class AccountLoginViewModel
 {
     [Required(ErrorMessage = "Username is required.")]
     public string Username { get; set; }

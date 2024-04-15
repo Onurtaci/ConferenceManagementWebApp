@@ -12,6 +12,7 @@ public class Conference
     [StringLength(50)]
     public string Title { get; set; }
 
+    [DataType(DataType.MultilineText)]
     [StringLength(500)]
     public string Description { get; set; }
 

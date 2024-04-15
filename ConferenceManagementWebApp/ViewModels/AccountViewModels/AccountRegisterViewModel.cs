@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ConferenceManagementWebApp.ViewModels;
+namespace ConferenceManagementWebApp.ViewModels.AccountViewModels;
 
-public class RegisterViewModel
+public class AccountRegisterViewModel
 {
     [Required(ErrorMessage = "First name is required.")]
     [Display(Name = "First Name")]

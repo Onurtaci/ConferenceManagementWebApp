@@ -81,6 +81,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasOne(e => e.Paper).WithOne(e => e.Review).HasForeignKey<Review>(e => e.PaperId).OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(e => e.Reviewer);
         });
-
     }
+
+    public DbSet<Conference> Conferences { get; set; }
+    public DbSet<Session> Sessions { get; set; }
+    public DbSet<Paper> Papers { get; set; }
+    public DbSet<Feedback> Feedbacks { get; set; }
+    public DbSet<Review> Reviews { get; set; }
 }

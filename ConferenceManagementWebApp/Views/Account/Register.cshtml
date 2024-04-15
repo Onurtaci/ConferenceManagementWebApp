@@ -1,5 +1,7 @@
 ﻿@using ConferenceManagementWebApp.ViewModels;
-@model RegisterViewModel;
+@using ConferenceManagementWebApp.ViewModels.AccountViewModels;
+@using ConferenceManagementWebApp.Enums;
+@model AccountRegisterViewModel;
 
 @{
     ViewData["Title"] = "Register";
@@ -47,12 +49,12 @@
                     </div>
                     <div class="col-8">
                         <select asp-for="Role" class="form-select">
-                            <option value="ConferenceAdmin">Organizer</option>
-                            <option value="Presenter">Presenter</option>
-                            <option value="Attendee">Attendee</option>
-                            <option value="Reviewer">Reviewer</option>
-                            <option value="Author">Author</option>
-                            <option value="Admin">Admin</option>
+                            <option value="Organizer">@Roles.Organizer</option>
+                            <option value="Presenter">@Roles.Presenter</option>
+                            <option value="Attendee">@Roles.Attendee</option>
+                            <option value="Reviewer">@Roles.Reviewer</option>
+                            <option value="Author">@Roles.Author</option>
+                            <option value="Admin">@Roles.Admin</option>
                         </select>
                     </div>
                 </div>
