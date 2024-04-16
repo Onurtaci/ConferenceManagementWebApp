@@ -9,7 +9,7 @@
 <div class="row d-flex align-items-center justify-content-center">
     <div class="col-md-5 card p-4">
         <h2 class="text-center text-info">Edit conference.</h2>
-        <form asp-action="Create" method="post">
+        <form asp-action="Edit" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-1">
                 <label asp-for="Title"></label>
@@ -35,6 +35,9 @@
                 <label asp-for="EndTime"></label>
                 <input asp-for="EndTime" class="form-control" type="date" value="@Model.EndTime.ToString("f")" />
                 <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <a asp-controller="Session" asp-action="Add" class="btn btn-info">Add Session</a>
             </div>
             <br />
             <div class="row">

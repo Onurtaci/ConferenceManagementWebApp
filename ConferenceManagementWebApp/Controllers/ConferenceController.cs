@@ -36,13 +36,21 @@ public class ConferenceController : Controller
     {
         if (ModelState.IsValid)
         {
+            var organizer = _userManager.GetUserAsync(User).Result;
+            if (organizer == null)
+            {
+                return NotFound();
+            }
+
             var conference = new Conference
             {
+                Id = Guid.NewGuid().ToString(),
                 Title = model.Title,
                 Description = model.Description,
                 Venue = model.Venue,
                 StartTime = model.StartTime,
-                EndTime = model.EndTime
+                EndTime = model.EndTime,
+                Organizer = organizer,
             };
 
             _context.Conferences.Add(conference);
@@ -54,9 +62,26 @@ public class ConferenceController : Controller
         return View(model);
     }
 
-    public IActionResult Edit()
+    public IActionResult Edit(string Id)
     {
-        return View();
+        var conference = _context.Conferences.Find(Id);
+
+        if (conference == null)
+        {
+            return NotFound();
+        }
+
+        var model = new ConferenceEditViewModel
+        {
+            Id = conference.Id,
+            Title = conference.Title,
+            Description = conference.Description,
+            Venue = conference.Venue,
+            StartTime = conference.StartTime,
+            EndTime = conference.EndTime,
+        };
+
+        return View(model);
     }
 
     [HttpPost]
@@ -66,7 +91,7 @@ public class ConferenceController : Controller
         {
             var conference = _context.Conferences.Find(model.Id);
 
-            if(conference == null)
+            if (conference == null)
             {
                 return NotFound();
             }
@@ -95,7 +120,7 @@ public class ConferenceController : Controller
     {
         var conference = _context.Conferences.Find(id);
 
-        if(conference == null)
+        if (conference == null)
         {
             return NotFound();
         }
@@ -104,5 +129,12 @@ public class ConferenceController : Controller
         _context.SaveChanges();
 
         return RedirectToAction("Index");
+    }
+
+    public IActionResult List()
+    {
+        var conferences = _context.Conferences.ToList();
+
+        return View(conferences);
     }
 }
