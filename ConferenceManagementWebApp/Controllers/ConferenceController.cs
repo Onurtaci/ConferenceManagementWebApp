@@ -7,18 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ConferenceManagementWebApp.Controllers;
 
-//[Authorize(Roles = "Organizer")]
+[Authorize(Roles = "Organizer")]
 public class ConferenceController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
 
-    public ConferenceController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+    public ConferenceController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
     {
         _context = context;
         _userManager = userManager;
-        _roleManager = roleManager;
     }
 
     public IActionResult Index()
@@ -36,8 +34,8 @@ public class ConferenceController : Controller
     {
         if (ModelState.IsValid)
         {
-            var organizer = _userManager.GetUserAsync(User).Result;
-            if (organizer == null)
+            var user = _userManager.GetUserAsync(User).Result;
+            if (user == null)
             {
                 return NotFound();
             }
@@ -50,7 +48,7 @@ public class ConferenceController : Controller
                 Venue = model.Venue,
                 StartTime = model.StartTime,
                 EndTime = model.EndTime,
-                Organizer = organizer,
+                Organizer = user,
             };
 
             _context.Conferences.Add(conference);
@@ -110,15 +108,9 @@ public class ConferenceController : Controller
         return View(model);
     }
 
-    public IActionResult Delete()
+    public IActionResult Delete(string Id)
     {
-        return View();
-    }
-
-    [HttpPost]
-    public IActionResult Delete(string id)
-    {
-        var conference = _context.Conferences.Find(id);
+        var conference = _context.Conferences.Find(Id);
 
         if (conference == null)
         {

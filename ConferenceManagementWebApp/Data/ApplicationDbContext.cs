@@ -42,7 +42,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasOne(e => e.Presenter);
 
             entity.HasOne(e => e.Conference).WithMany(e => e.Sessions).OnDelete(DeleteBehavior.Restrict);
-            entity.HasMany(e => e.Paper);
+            entity.HasMany(e => e.Papers);
         });
 
         modelBuilder.Entity<Paper>(entity =>
@@ -55,7 +55,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.Keywords).HasMaxLength(50);
             entity.Property(e => e.FileBytes).IsRequired();
             entity.HasOne(e => e.Author);
-            entity.HasOne(e => e.Session).WithMany(e => e.Paper).OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.Session).WithMany(e => e.Papers).OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(e => e.Review);
         });
 
@@ -81,6 +81,16 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasOne(e => e.Paper).WithOne(e => e.Review).HasForeignKey<Review>(e => e.PaperId).OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(e => e.Reviewer);
         });
+
+        modelBuilder.Entity<Notification>(entity =>
+        {
+            entity.ToTable("Notifications");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).IsRequired();
+            entity.Property(e => e.Message).HasMaxLength(500);
+            entity.Property(e => e.CreationDate).IsRequired();
+            entity.HasOne(e => e.User);
+        });
     }
 
     public DbSet<Conference> Conferences { get; set; }
@@ -88,4 +98,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Paper> Papers { get; set; }
     public DbSet<Feedback> Feedbacks { get; set; }
     public DbSet<Review> Reviews { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
 }

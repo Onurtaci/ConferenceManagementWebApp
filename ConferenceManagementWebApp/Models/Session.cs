@@ -27,5 +27,5 @@ public class Session
     [Required]
     public Conference Conference { get; set; }
 
-    public ICollection<Paper> Paper { get; set; }
+    public ICollection<Paper> Papers { get; set; }
 }

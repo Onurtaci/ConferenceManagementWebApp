@@ -16,4 +16,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\FeedbackViewModels\" />
+    <Folder Include="ViewModels\ReviewViewModels\" />
+  </ItemGroup>
+
 </Project>
