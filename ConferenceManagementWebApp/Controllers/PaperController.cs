@@ -4,11 +4,10 @@ using ConferenceManagementWebApp.ViewModels.PaperViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ConferenceManagementWebApp.Controllers;
 
-//[Authorize(Roles = "Author")]
+[Authorize(Roles = "Author")]
 public class PaperController : Controller
 {
     private readonly ApplicationDbContext _context;
