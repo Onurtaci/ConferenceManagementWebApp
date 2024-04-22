@@ -32,5 +32,5 @@ public class Paper
 
     public ApplicationUser Author { get; set; }
 
-    public Review? Review { get; set; } // this sentence maybe will changed
+    public ICollection<Review>? Reviews { get; set; } // this sentence maybe will changed
 }

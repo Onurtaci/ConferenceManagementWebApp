@@ -70,60 +70,67 @@ public class PaperController : Controller
 
             session.Papers.Add(paper);
 
-            if (model.RandomReviewer)
+            if (model.SelectedReviewerId != null)
             {
-                var reviewer = GetRandomRewiewer();
-                var review = new Review
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Paper = paper,
-                    Reviewer = reviewer,
-                };
 
-                _context.Reviews.Add(review);
-                await _context.SaveChangesAsync();
+                var reviewer = _userManager.FindByIdAsync(model.SelectedReviewerId).Result;
+                if (reviewer != null)
+                {
+                    AddReview(paper, reviewer);
+                }
             }
             else
             {
-                var reviewer = _userManager.FindByIdAsync(model.ReviewerId).Result;
-                if (reviewer == null)
+                var randomReviewers = GetRandomReviewers(3);
+                foreach (var reviewer in randomReviewers)
                 {
-                    return NotFound();
+                    AddReview(paper, reviewer);
                 }
-
-                var review = new Review
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    PaperId = paper.Id,
-                    Reviewer = reviewer,
-                    Paper = paper,
-                };
-
-                await _context.Reviews.AddAsync(review);
-                await _context.SaveChangesAsync();
-
-                var notification = new Notification
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    UserId = reviewer.Id,
-                    Message = $"You have been assigned to review the paper {paper.Title}.",
-                    CreationDate = DateTime.Now,
-                };
-
-                await _context.Notifications.AddAsync(notification);
-                await _context.SaveChangesAsync();
             }
-
             return RedirectToAction("Index");
         }
         return View(model);
     }
 
-    private ApplicationUser GetRandomRewiewer()
+    private List<ApplicationUser> GetRandomReviewers(int numberOfReviewer)
     {
         var reviewers = _userManager.GetUsersInRoleAsync("Reviewer").Result;
         var random = new Random();
-        var index = random.Next(reviewers.Count);
-        return reviewers[index];
+        var randomReviewers = new List<ApplicationUser>();
+        for (int i = 0; i < numberOfReviewer; i++)
+        {
+            var index = random.Next(reviewers.Count);
+            randomReviewers.Add(reviewers[index]);
+            reviewers.RemoveAt(index);
+        }
+        return randomReviewers;
+    }
+
+    private bool AddReview(Paper paper, ApplicationUser reviewer)
+    {
+        var review = new Review
+        {
+            Id = Guid.NewGuid().ToString(),
+            Reviewer = reviewer,
+            Paper = paper
+        };
+
+        _context.Reviews.Add(review);
+        var result = _context.SaveChanges();
+        if (result > 0)
+        {
+            paper.Reviews.Add(review);
+
+            var notification = new Notification
+            {
+                Id = Guid.NewGuid().ToString(),
+                Message = $"You have been assigned to review the paper {paper.Title}.",
+                CreationDate = DateTime.Now,
+                User = reviewer
+            };
+
+            return true;
+        }
+        return false;
     }
 }

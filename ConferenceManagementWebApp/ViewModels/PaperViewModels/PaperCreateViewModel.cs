@@ -22,8 +22,5 @@ public class PaperCreateViewModel
     [Required]
     public string AuthorId { get; set; }
 
-    [Required]
-    public bool RandomReviewer { get; set; }
-
-    public string? ReviewerId { get; set; }
+    public string? SelectedReviewerId { get; set; }
 }
