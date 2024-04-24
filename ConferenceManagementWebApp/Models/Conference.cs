@@ -32,4 +32,8 @@ public class Conference
     public ICollection<Session> Sessions { get; set; }
 
     public ICollection<Feedback> Feedbacks { get; set; }
+
+    public ICollection<ConferenceAttendee> ConferenceAttendees { get; set; }
+
+    public ICollection<ConferenceReviewer> ConferenceReviewers { get; set; }
 }

@@ -91,6 +91,24 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.CreationDate).IsRequired();
             entity.HasOne(e => e.User);
         });
+
+        modelBuilder.Entity<ConferenceAttendee>(entity =>
+        {
+            entity.ToTable("ConferenceAttendees");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).IsRequired();
+            entity.HasOne(e => e.Conference).WithMany(e => e.ConferenceAttendees).OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.Attendee);
+        });
+
+        modelBuilder.Entity<ConferenceReviewer>(entity =>
+        {
+            entity.ToTable("ConferenceReviewers");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).IsRequired();
+            entity.HasOne(e => e.Conference).WithMany(e => e.ConferenceReviewers).OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.Reviewer);
+        });
     }
 
     public DbSet<Conference> Conferences { get; set; }
@@ -99,4 +117,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Feedback> Feedbacks { get; set; }
     public DbSet<Review> Reviews { get; set; }
     public DbSet<Notification> Notifications { get; set; }
+    public DbSet<ConferenceAttendee> ConferenceAttendees { get; set; }
+    public DbSet<ConferenceReviewer> ConferenceReviewers { get; set; }
 }
