@@ -26,4 +26,8 @@
     <Folder Include="ViewModels\ReviewViewModels\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="Views\Home\Index.cshtml" />
+  </ItemGroup>
+
 </Project>
