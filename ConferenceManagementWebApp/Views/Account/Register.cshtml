@@ -1,4 +1,6 @@
-﻿@model ConferenceManagementWebApp.ViewModels.AccountViewModels.AccountRegisterViewModel
+﻿ @using ConferenceManagementWebApp.Enums
+
+@model ConferenceManagementWebApp.ViewModels.AccountViewModels.AccountRegisterViewModel
 
 @{
     ViewData["Title"] = "Register";
@@ -15,15 +17,53 @@
     </nav>
 </header>
 
-<div class="" register-box">
+<div class="register-box">
     <div class="register-header">
         <header>Create An Account</header>
     </div>
-
-    <div class="input-box">
-        <input asp-for="FirstName" class="input-field" placeholder="First Name" />
-    </div>
-    <div class="input-box">
-        <input asp-for="LastName" class="input-field" placeholder="Last Name" />
-    </div>
+    <form asp-action="Register" asp-controller="Account" method="post">
+        <div class="input-box">
+            <input asp-for="FirstName" class="input-field" placeholder="First Name" />
+        </div>
+        <div class="input-box">
+            <input asp-for="LastName" class="input-field" placeholder="Last Name" />
+        </div>
+        <div class="input-box">
+            <input asp-for="Username" class="input-field" placeholder="Username" />
+        </div>
+        <div class="input-box">
+            <input asp-for="Email" class="input-field" placeholder="Email" />
+        </div>
+        <div class="input-box">
+            <input asp-for="Password" class="input-field" placeholder="Password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="input-box">
+            <input asp-for="ConfirmPassword" class="input-field" placeholder="Confirm Password" />
+        </div>
+        <div class="input-box">
+            <select asp-for="Role" class="input-field">
+                <option value="" disabled selected>Select Role</option>
+                <option value="Organizer">@Roles.Organizer</option>
+                <option value="Presenter">@Roles.Presenter</option>
+                <option value="Attendee">@Roles.Attendee</option>
+                <option value="Reviewer">@Roles.Reviewer</option>
+                <option value="Author">@Roles.Author</option>
+                <option value="Admin">@Roles.Admin</option>
+            </select>
+        </div>
+        <div class="input-submit">
+            <button class="submit-btn" id="submit"></button>
+            <label for="submit">Register</label>
+        </div>
+    </form>
+    <div class="sign-in-link">
+        <p>Already have an account? <a asp-action="Login" asp-controller="Account">Login</a></p>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

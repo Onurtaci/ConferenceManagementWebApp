@@ -1,6 +1,4 @@
-﻿body {
-}
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
 
 * {
     margin: 0;
@@ -126,7 +124,6 @@ body {
     border-radius: 30px;
     cursor: pointer;
     transition: .3s;
-    color: #fff;
 }
 
 .input-submit label {

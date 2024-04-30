@@ -1,5 +1,6 @@
 using ConferenceManagementWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -8,16 +9,36 @@ namespace ConferenceManagementWebApp.Controllers;
 [Authorize]
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
     public IActionResult Index()
     {
-        return View();
+        if (User.IsInRole("Admin"))
+        {
+            return RedirectToAction("Index", "Admin");
+        }
+        else if (User.IsInRole("Organizer"))
+        {
+            return RedirectToAction("Index", "Organizer");
+        }
+        else if (User.IsInRole("Reviewer"))
+        {
+            return RedirectToAction("Index", "Reviewer");
+        }
+        else if (User.IsInRole("Presenter"))
+        {
+            return RedirectToAction("Index", "Presenter");
+        }
+        else if (User.IsInRole("Attendee"))
+        {
+            return RedirectToAction("Index", "Attendee");
+        }
+        else if (User.IsInRole("Author"))
+        {
+            return RedirectToAction("Index", "Author");
+        }
+        else
+        {
+            return View();
+        }
     }
 
     public IActionResult Privacy()
