@@ -13,27 +13,23 @@ public class HomeController : Controller
     {
         if (User.IsInRole("Admin"))
         {
-            return RedirectToAction("Index", "Admin");
+            return View("AdminIndex");
         }
         else if (User.IsInRole("Organizer"))
         {
-            return RedirectToAction("Index", "Organizer");
-        }
-        else if (User.IsInRole("Reviewer"))
-        {
-            return RedirectToAction("Index", "Reviewer");
-        }
-        else if (User.IsInRole("Presenter"))
-        {
-            return RedirectToAction("Index", "Presenter");
+            return View("OrganizerIndex");
         }
         else if (User.IsInRole("Attendee"))
         {
-            return RedirectToAction("Index", "Attendee");
+            return View("AttendeeIndex");
+        }
+        else if (User.IsInRole("Reviewer"))
+        {
+            return View("ReviewerIndex");
         }
         else if (User.IsInRole("Author"))
         {
-            return RedirectToAction("Index", "Author");
+            return View("AuthorIndex");
         }
         else
         {
