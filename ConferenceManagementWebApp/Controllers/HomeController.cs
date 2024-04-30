@@ -31,6 +31,10 @@ public class HomeController : Controller
         {
             return View("AuthorIndex");
         }
+        else if (User.IsInRole("Presenter"))
+        {
+            return View("PresenterIndex");
+        }
         else
         {
             return View();
