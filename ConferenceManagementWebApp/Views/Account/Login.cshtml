@@ -1,40 +1,48 @@
-﻿@using ConferenceManagementWebApp.ViewModels;
-@using ConferenceManagementWebApp.ViewModels.AccountViewModels;
-@model AccountLoginViewModel;
+﻿@model ConferenceManagementWebApp.ViewModels.AccountViewModels.AccountLoginViewModel
 
 @{
     ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row d-flex align-items-center justify-content-center">
-    <div class="col-md-4 card p-4">
-        <h2 class="text-center text-info">Welcome back!</h2>
-        <form asp-action="Login" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="mb-1">
-                <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" placeholder="Enter your username"/>
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
-            <div class="mb-1">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" placeholder="Enter your password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="mb-1 form-check">
-                <label class="form-check-label">
-                    <input asp-for="RememberMe" class="form-check-input" /> @Html.DisplayNameFor(m => m.RememberMe)
-                </label>
-            </div>
-            <div class="row">
-                <div class="col-8">
-                    <a asp-action="Register" class="text-decoration-none float-start mt-2">Don't have an account?</a>
-                </div>
-                <div class="col-4">
-                    <button type="submit" value="Login" class="btn btn-primary btn-sm float-end">Login</button>
-                </div>
-            </div>
-        </form>
+<link rel="stylesheet" href="~/css/login.css">
+<title>Login</title>
+
+
+<header class="header">
+    <nav class="navbar">
+        <a asp-controller="Account" asp-action="Login">Login</a>
+        <a asp-controller="Account" asp-action="Register">Register</a>
+    </nav>
+</header>
+
+<div class="login-box">
+    <div class="login-header">
+        <header>Welcome Back!</header>
+    </div>
+    <form asp-action="Login" asp-controller="Account" method="post">
+        <div class="input-box">
+            <input asp-for="Username" class="input-field" placeholder="Username">
+        </div>
+        <div class="input-box">
+            <input asp-for="Password" class="input-field" placeholder="Password ">
+        </div>
+        <div class="forgot">
+            <section>
+                <input asp-for="RememberMe" type="checkbox">
+                <label for="RememberMe">Remember me</label>
+            </section>
+            <section>
+                <a href="#">Forgot password</a>
+            </section>
+        </div>
+        <div class="input-submit">
+            <button class="submit-btn" id="submit"></button>
+            <label for="submit">Login</label>
+        </div>
+    </form>
+    <div class="sign-up-link">
+        <p>Don't have an account? <a asp-action="Register" asp-controller="Account">Sign Up</a></p>
     </div>
 </div>
 

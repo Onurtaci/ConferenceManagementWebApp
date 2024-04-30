@@ -1,79 +1,29 @@
-﻿@using ConferenceManagementWebApp.ViewModels;
-@using ConferenceManagementWebApp.ViewModels.AccountViewModels;
-@using ConferenceManagementWebApp.Enums;
-@model AccountRegisterViewModel;
+﻿@model ConferenceManagementWebApp.ViewModels.AccountViewModels.AccountRegisterViewModel
 
 @{
     ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row d-flex align-items-center justify-content-center">
-    <div class="col-md-5 card p-4">
-        <h2 class="text-center text-info">Create a new account.</h2>
-        <form asp-action="Register" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="mb-1">
-                <label asp-for="FirstName"></label>
-                <input asp-for="FirstName" class="form-control" placeholder="Enter your first name" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="mb-1">
-                <label asp-for="LastName"></label>
-                <input asp-for="LastName" class="form-control" placeholder="Enter your last name" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="mb-1">
-                <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" placeholder="Enter your username" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
-            <div class="mb-1">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" placeholder="Enter your email" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="mb-1">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" placeholder="Enter your password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="mb-1">
-                <label asp-for="ConfirmPassword"></label>
-                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm your password" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <div class="row">
-                    <div class="col-4">
-                        <label for="Role">Choose Role</label>
-                    </div>
-                    <div class="col-8">
-                        <select asp-for="Role" class="form-select">
-                            <option value="Organizer">@Roles.Organizer</option>
-                            <option value="Presenter">@Roles.Presenter</option>
-                            <option value="Attendee">@Roles.Attendee</option>
-                            <option value="Reviewer">@Roles.Reviewer</option>
-                            <option value="Author">@Roles.Author</option>
-                            <option value="Admin">@Roles.Admin</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+<link rel="stylesheet" href="~/css/register.css">
 
-            <div class="row">
-                <div class="col-8">
-                    <a asp-action="Login" class="text-decoration-none float-start mt-2">Have an account?</a>
-                </div>
-                <div class="col-4">
-                    <button type="submit" value="Register" class="btn btn-primary btn-sm float-end">Register</button>
-                </div>
-            </div>
-        </form>
+<header class="header">
+    <a asp-controller="Home" asp-action="Index" class="logo">Conferance Management System</a>
+    <nav class="navbar">
+        <a asp-controller="Account" asp-action="Login">Login</a>
+        <a asp-controller="Account" asp-action="Register">Register</a>
+    </nav>
+</header>
+
+<div class="" register-box">
+    <div class="register-header">
+        <header>Create An Account</header>
+    </div>
+
+    <div class="input-box">
+        <input asp-for="FirstName" class="input-field" placeholder="First Name" />
+    </div>
+    <div class="input-box">
+        <input asp-for="LastName" class="input-field" placeholder="Last Name" />
     </div>
 </div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

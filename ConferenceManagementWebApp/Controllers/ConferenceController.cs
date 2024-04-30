@@ -19,7 +19,7 @@ public class ConferenceController : Controller
         _userManager = userManager;
     }
 
-    public IActionResult Index()
+    public IActionResult Index ()
     {
         return View();
     }
@@ -30,7 +30,7 @@ public class ConferenceController : Controller
     }
 
     [HttpPost]
-    public IActionResult Create(ConferenceCreateViewModel model)
+    public async Task<IActionResult> Create(ConferenceCreateViewModel model)
     {
         if (ModelState.IsValid)
         {

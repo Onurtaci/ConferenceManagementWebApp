@@ -3,7 +3,7 @@
 namespace ConferenceManagementWebApp.ViewModels.SessionViewModels;
 
 public class SessionCreateViewModel
-{
+{    
     [Required]
     public string Title { get; set; }
 
@@ -12,6 +12,8 @@ public class SessionCreateViewModel
 
     [Required]
     public string PresentationType { get; set; }
+
+    //Start time and end time
 
     [Required]
     public string PresenterId { get; set; }

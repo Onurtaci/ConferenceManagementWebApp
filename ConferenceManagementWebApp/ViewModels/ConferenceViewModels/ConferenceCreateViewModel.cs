@@ -1,4 +1,6 @@
-﻿namespace ConferenceManagementWebApp.ViewModels.ConferenceViewModels;
+﻿using ConferenceManagementWebApp.Models;
+
+namespace ConferenceManagementWebApp.ViewModels.ConferenceViewModels;
 
 public class ConferenceCreateViewModel
 {
@@ -11,4 +13,8 @@ public class ConferenceCreateViewModel
     public DateTime StartTime { get; set; }
 
     public DateTime EndTime { get; set; }
+
+    public ICollection<ApplicationUser> Reviewers { get; set; }
+
+    // Default Conference attributes, Reviewers, Sessions
 }

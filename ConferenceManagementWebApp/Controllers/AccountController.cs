@@ -69,7 +69,7 @@ public class AccountController : Controller
                 }
                 await _userManager.AddToRoleAsync(user, model.Role);
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home"); // will change with the actual role
             }
             foreach (var error in result.Errors)
             {
