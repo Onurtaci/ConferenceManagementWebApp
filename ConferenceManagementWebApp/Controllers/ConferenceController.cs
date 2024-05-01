@@ -24,9 +24,15 @@ public class ConferenceController : Controller
         return View();
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        return View();
+        var reviewers = await _userManager.GetUsersInRoleAsync("Reviewer");
+        var model = new ConferenceCreateViewModel
+        {
+            AllReviewers = reviewers,
+        };
+
+        return View(model);
     }
 
     [HttpPost]

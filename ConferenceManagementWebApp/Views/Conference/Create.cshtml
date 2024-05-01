@@ -1,0 +1,61 @@
+﻿@model ConferenceManagementWebApp.ViewModels.ConferenceViewModels.ConferenceCreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/conferencecreate.css">
+
+<header class="header">
+    <a asp-controller="Home" asp-action="Index" class="logo">Conferance Management System</a>
+    <nav class="navbar">
+        <a asp-controller="Home" asp-action="Index">Home</a>
+        <a asp-controller="Home" asp-action="Search">Search</a>
+        <a asp-controller="Home" asp-action="Notifications">Notifications</a>
+        <a asp-controller="Home" asp-action="Profile">Profile</a>
+        <a asp-controller="Account" asp-action="Logout">Logout</a>
+    </nav>
+</header>
+<div class="organize-box">
+    <div class="organize-header">
+        <header>Organize A Conference</header>
+    </div>
+    <form method="post" action="@Url.Action("Create", "Conference")">
+        <div class="input-box">
+            <input asp-for="Title" class="input-field" placeholder="Title" />
+        </div>
+        <div class="input-box">
+            <textarea asp-for="Description" class="input-field" placeholder="Description"></textarea>
+        </div>
+        <div class="input-box">
+            <input asp-for="Venue" class="input-field" placeholder="Venue" />
+        </div>
+        <div class="input-box">
+            <label for="startTime">Start Time</label>
+            <input asp-for="StartTime" type="datetime-local" class="input-field" id="startTime" />
+        </div>
+        <div class="input-box">
+            <label for="endTime">End Time</label>
+            <input asp-for="EndTime" type="datetime-local" class="input-field" id="endTime" />
+        </div>
+
+        <div class="input-box">
+            <label for="reviewerCount" class="label">Number Of Reviewers</label>
+            <select name="ReviewerCount" class="input-field" id="reviewerCount" required>
+                <option value="" disabled selected>Number Of Reviewers</option>
+                @for (int i = 1; i <= Model.AllReviewers.Count && i <= 6; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+        </div>
+
+        <div id="reviewers" class="input-box"></div>
+
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/conferencecreate.js"></script>
+}

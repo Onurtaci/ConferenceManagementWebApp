@@ -14,7 +14,9 @@ public class ConferenceCreateViewModel
 
     public DateTime EndTime { get; set; }
 
-    public ICollection<ApplicationUser> Reviewers { get; set; }
+    public ICollection<ApplicationUser> AllReviewers { get; set; }
 
-    // Default Conference attributes, Reviewers, Sessions
+    public ICollection<string> SelectedReviewers { get; set; }
+
+    public ICollection<Session> Sessions { get; set; }
 }
