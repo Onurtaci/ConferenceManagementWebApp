@@ -1,47 +1,23 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
-    const reviewerCount = document.getElementById("reviewerCount");
-    const reviewersDiv = document.getElementById("reviewers");
+﻿document.addEventListener("DOMContentLoaded", function() {
+    const selectHeader = document.getElementById("select-header");
+    const selectOptions = document.getElementById("select");
     const sessionCount = document.getElementById("sessionCount");
     const sessionsDiv = document.getElementById("sessions");
 
-    reviewerCount.addEventListener("change", function () {
-        const selectedReviewerCount = parseInt(reviewerCount.value);
-        reviewersDiv.innerHTML = "";
-
-        for (let i = 1; i <= selectedReviewerCount; i++) {
-            const reviewerDiv = document.createElement("div");
-            reviewerDiv.classList.add("input-box");
-
-            const label = document.createElement("label");
-            label.classList.add("label")
-            label.textContent = `Reviewer ${i}`;
-            reviewerDiv.appendChild(label);
-
-            const select = document.createElement("select");
-            select.name = `reviewer${i}`;
-            select.classList.add("input-field")
-            reviewerDiv.appendChild(select);
-
-            const defaultOption = document.createElement("option");
-            defaultOption.value = "";
-            defaultOption.textContent = "Select Reviewer";
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-            select.appendChild(defaultOption);
-
-            const reviewers = ["Reviewer 1", "Reviewer 2", "Reviewer 3"];
-            for (const reviewer of reviewers) {
-                const option = document.createElement("option");
-                option.value = reviewer;
-                option.textContent = reviewer;
-                select.appendChild(option);
-            }
-
-            reviewersDiv.appendChild(reviewerDiv);
-        }
+    selectHeader.addEventListener("click", function(event) {
+        selectOptions.style.display = selectOptions.style.display === "block" ? "none" : "block";
+        event.stopPropagation();
     });
 
-    sessionCount.addEventListener("change", function () {
+    document.addEventListener("click", function(event) {
+        selectOptions.style.display = "none";
+    });
+
+    selectOptions.addEventListener("click", function(event) {
+        event.stopPropagation();
+    });
+
+    sessionCount.addEventListener("change", function() {
         const selectedSessionCount = parseInt(sessionCount.value);
         sessionsDiv.innerHTML = ""; // Önceki session alanlarını temizle
 
@@ -91,4 +67,6 @@
             sessionsDiv.appendChild(sessionDiv);
         }
     });
+
 });
+  
