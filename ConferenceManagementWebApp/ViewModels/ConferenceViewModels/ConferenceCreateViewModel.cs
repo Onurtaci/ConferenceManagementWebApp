@@ -1,4 +1,5 @@
-﻿using ConferenceManagementWebApp.Models;
+﻿using ConferenceManagementWebApp.Enums;
+using ConferenceManagementWebApp.Models;
 
 namespace ConferenceManagementWebApp.ViewModels.ConferenceViewModels;
 
@@ -19,4 +20,7 @@ public class ConferenceCreateViewModel
     public ICollection<string> SelectedReviewers { get; set; }
 
     public ICollection<Session> Sessions { get; set; }
+
+    public ICollection<ApplicationUser> AllPresenters { get; set; }
+
 }

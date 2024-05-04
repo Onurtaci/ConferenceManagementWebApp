@@ -3,8 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link rel="stylesheet" href="~/css/base.css">
-<link rel="stylesheet" href="~/css/basehomepage.css">
+<link rel="stylesheet" href="~/css/baseHomePage.css">
 <link rel="stylesheet" href="~/css/base.css">
 
 <header class="header">
@@ -21,5 +20,5 @@
 <div class="button-container">
     <button class="custom-button">Upcoming Conferences</button>
     <button class="custom-button">Organized Conferences</button>
-    <a asp-controller="Conference" asp-action="Create" class="custom-button">Organize A Conference</a>
+    <button class="custom-button"><a asp-controller="Conference" asp-action="Create">Organize A Conference</a></button>
 </div>

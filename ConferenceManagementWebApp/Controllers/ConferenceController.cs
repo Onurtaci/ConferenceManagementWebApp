@@ -1,4 +1,5 @@
 ﻿using ConferenceManagementWebApp.Data;
+using ConferenceManagementWebApp.Enums;
 using ConferenceManagementWebApp.Models;
 using ConferenceManagementWebApp.ViewModels.ConferenceViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +20,7 @@ public class ConferenceController : Controller
         _userManager = userManager;
     }
 
-    public IActionResult Index ()
+    public IActionResult Index()
     {
         return View();
     }
@@ -27,9 +28,12 @@ public class ConferenceController : Controller
     public async Task<IActionResult> Create()
     {
         var reviewers = await _userManager.GetUsersInRoleAsync("Reviewer");
+        var presenters = await _userManager.GetUsersInRoleAsync("Presenter");
+
         var model = new ConferenceCreateViewModel
         {
-            AllReviewers = reviewers,
+            AllReviewers = reviewers.ToList(),
+            AllPresenters = presenters.ToList()
         };
 
         return View(model);

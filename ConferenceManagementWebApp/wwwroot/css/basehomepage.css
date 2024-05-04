@@ -28,9 +28,14 @@ body {
     transition: all 0.3s ease;
 }
 
-.custom-button:hover {
-    background-color: #FF5733;
-    color: #fff;
-    width: 260px;
-    border-radius: 10px;
-}
+    .custom-button:hover {
+        background-color: #FF5733;
+        color: #fff;
+        width: 260px;
+        border-radius: 10px;
+    }
+
+    .custom-button a {
+        color: white;
+        text-decoration: none;
+    }

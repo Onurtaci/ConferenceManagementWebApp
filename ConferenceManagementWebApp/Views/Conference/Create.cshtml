@@ -1,4 +1,5 @@
-﻿@model ConferenceManagementWebApp.ViewModels.ConferenceViewModels.ConferenceCreateViewModel
+﻿@using System.Text.Json
+@model ConferenceManagementWebApp.ViewModels.ConferenceViewModels.ConferenceCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -22,7 +23,8 @@
     <div class="organize-header">
         <header>Organize A Conference</header>
     </div>
-    <form method="post" action="@Url.Action("Create", "Conference")">
+    <form id="conferenceForm" method="post" action="@Url.Action("Create", "Conference")">
+        <input type="hidden" id="selectedReviewers" name="SelectedReviewers" />
         <div class="input-box">
             <input asp-for="Title" class="input-field" placeholder="Title" />
         </div>
@@ -41,22 +43,48 @@
             <input asp-for="EndTime" type="datetime-local" class="input-field" id="endTime" />
         </div>
 
+        <label class="label">Choose Reviewers</label>
+        <div class="custom-select" id="custom-select">
+            <div class="select-header" id="select-header">
+                <span>Choose Reviewers</span>
+                <div class="arrow"></div>
+            </div>
+            <div class="select-options" id="select">
+                @foreach (var reviewer in Model.AllReviewers)
+                {
+                    <div class="option">
+                        <input type="checkbox" id="@("reviewer_" + reviewer)" name="@("reviewer_" + reviewer)">
+                        <label for="@("reviewer_" + reviewer)">@reviewer.FirstName @reviewer.LastName</label>
+                    </div>
+                }
+            </div>
+        </div>
+
+        @* <div id="reviewers" class="input-box"></div> *@
+
         <div class="input-box">
-            <label for="reviewerCount" class="label">Number Of Reviewers</label>
-            <select name="ReviewerCount" class="input-field" id="reviewerCount" required>
-                <option value="" disabled selected>Number Of Reviewers</option>
-                @for (int i = 1; i <= Model.AllReviewers.Count && i <= 6; i++)
+            <label for="sessionCount" class="label">Number Of Sessions</label>
+            <select class="input-field" id="sessionCount" required>
+                <option value="" disabled selected>Number Of Sessions</option>
+                @for (int i = 1; i <= 6; i++)
                 {
                     <option value="@i">@i</option>
                 }
             </select>
         </div>
 
-        <div id="reviewers" class="input-box"></div>
+        <div id="sessions"></div>
 
+        <div class="input-submit">
+            <button class="submit-btn" id="submit"></button>
+            <label for="submit">Create Conference</label>
+        </div>
     </form>
 </div>
 
 @section Scripts {
+    <script>
+        var allPresenters = @Html.Raw(JsonSerializer.Serialize(Model.AllPresenters));
+    </script>
     <script src="~/js/conferencecreate.js"></script>
 }
