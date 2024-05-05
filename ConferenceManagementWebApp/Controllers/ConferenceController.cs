@@ -107,6 +107,12 @@ public class ConferenceController : Controller
             return RedirectToAction("Index","Home");
         }
 
+        var allReviewers = await _userManager.GetUsersInRoleAsync("Reviewer");
+        var allPresenters = await _userManager.GetUsersInRoleAsync("Presenter");
+
+        model.AllReviewers = allReviewers.ToList();
+        model.AllPresenters = allPresenters.ToList();
+
         return View(model);
     }
 }
