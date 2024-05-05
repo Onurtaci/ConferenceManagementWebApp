@@ -29,11 +29,11 @@ public class Conference
     [Required]
     public ApplicationUser Organizer { get; set; }
 
-    public ICollection<Session> Sessions { get; set; }
+    public List<Session> Sessions { get; set; } = [];
 
-    public ICollection<Feedback> Feedbacks { get; set; }
+    public List<Feedback> Feedbacks { get; set; } = [];
 
-    public ICollection<ConferenceAttendee> ConferenceAttendees { get; set; }
+    public List<ConferenceAttendee> ConferenceAttendees { get; set; } = [];
 
-    public ICollection<ConferenceReviewer> ConferenceReviewers { get; set; }
+    public List<ConferenceReviewer> ConferenceReviewers { get; set; } = [];
 }

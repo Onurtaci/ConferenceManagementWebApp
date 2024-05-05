@@ -2,6 +2,7 @@
 using ConferenceManagementWebApp.Enums;
 using ConferenceManagementWebApp.Models;
 using ConferenceManagementWebApp.ViewModels.ConferenceViewModels;
+using ConferenceManagementWebApp.ViewModels.SessionViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -51,6 +52,9 @@ public class ConferenceController : Controller
                 Organizer = await _userManager.GetUserAsync(User)
             };
 
+            await _context.Conferences.AddAsync(conference);
+            await _context.SaveChangesAsync();
+
             var selectedReviewers = JsonConvert.DeserializeObject<List<string>>(model.SelectedReviewers[0]);
 
             foreach (var reviewerId in selectedReviewers)
@@ -59,108 +63,50 @@ public class ConferenceController : Controller
 
                 if (reviewer is not null)
                 {
-                    conference.ConferenceReviewers.Add(new ConferenceReviewer
+                    var conferenceReviewer = new ConferenceReviewer
                     {
-                        Conference = conference,
-                        Reviewer = reviewer
-                    });
+                        Id = Guid.NewGuid().ToString(),
+                        Reviewer = reviewer,
+                        Conference = conference
+                    };
+
+                    conference.ConferenceReviewers.Add(conferenceReviewer);
+
+                    await _context.ConferenceReviewers.AddAsync(conferenceReviewer);
+                    await _context.SaveChangesAsync();
                 }
             }
 
-            var sessionsData = model.SessionsData;
+            var sessionsData = JsonConvert.DeserializeObject<List<SessionDataViewModel>>(model.SessionsData[0]);
 
-            //foreach (var sessionData in sessionsData)
-            //{
-            //    var session = new Session
-            //    {
-            //        Id = Guid.NewGuid().ToString(),
-            //        Title = sessionData.Title,
-            //        Topic = sessionData.Topic,
-            //        StartTime = sessionData.StartTime,
-            //        EndTime = sessionData.EndTime,
-            //        Presenter = await _userManager.FindByIdAsync(sessionData.PresenterId),
-            //        Conference = conference
-            //    };
-
-            //    conference.Sessions.Add(session);
-            //}
-
-            await _context.Conferences.AddAsync(conference);
-            await _context.SaveChangesAsync();
-
-            return View("Home/Index");
-        }
-
-        return View(model);
-    }
-
-    public IActionResult Edit(string Id)
-    {
-        var conference = _context.Conferences.Find(Id);
-
-        if (conference == null)
-        {
-            return NotFound();
-        }
-
-        var model = new ConferenceEditViewModel
-        {
-            Id = conference.Id,
-            Title = conference.Title,
-            Description = conference.Description,
-            Venue = conference.Venue,
-            StartTime = conference.StartTime,
-            EndTime = conference.EndTime,
-        };
-
-        return View(model);
-    }
-
-    [HttpPost]
-    public IActionResult Edit(ConferenceEditViewModel model)
-    {
-        if (ModelState.IsValid)
-        {
-            var conference = _context.Conferences.Find(model.Id);
-
-            if (conference == null)
+            foreach (var sessionData in sessionsData)
             {
-                return NotFound();
+                var presenter = await _userManager.FindByIdAsync(sessionData.PresenterId);
+
+                if (presenter is not null)
+                {
+                    var session = new Session
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Title = sessionData.Title,
+                        Topic = sessionData.Topic,
+                        StartTime = sessionData.StartTime,
+                        EndTime = sessionData.EndTime,
+                        PresentationType = (PresentationTypes) Enum.Parse(typeof(PresentationTypes), sessionData.PresentationType.ToString()),
+                        Presenter = presenter,
+                        Conference = conference
+                    };
+
+                    conference.Sessions.Add(session);
+
+                    await _context.Sessions.AddAsync(session);
+                    await _context.SaveChangesAsync();
+                }
             }
 
-            conference.Title = model.Title;
-            conference.Description = model.Description;
-            conference.Venue = model.Venue;
-            conference.StartTime = model.StartTime;
-            conference.EndTime = model.EndTime;
-
-            _context.SaveChanges();
-
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Home");
         }
 
         return View(model);
-    }
-
-    public IActionResult Delete(string Id)
-    {
-        var conference = _context.Conferences.Find(Id);
-
-        if (conference == null)
-        {
-            return NotFound();
-        }
-
-        _context.Conferences.Remove(conference);
-        _context.SaveChanges();
-
-        return RedirectToAction("Index");
-    }
-
-    public IActionResult List()
-    {
-        var conferences = _context.Conferences.ToList();
-
-        return View(conferences);
     }
 }
