@@ -2,7 +2,7 @@
 
 public enum PresentationTypes
 {
-    Workshop,
+    Workshop = 1,
     Keynote,
     Poster,
     Other

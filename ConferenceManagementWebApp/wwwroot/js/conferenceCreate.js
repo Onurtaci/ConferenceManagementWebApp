@@ -33,13 +33,15 @@ document.addEventListener("DOMContentLoaded", function () {
             sessionDiv.classList.add("session-group");
             sessionDiv.innerHTML = `
           <h3 class="session-header">Session ${i}</h3>
-  
+
           <div class="input-box">
-            <input type="text" class="input-field" placeholder="Session Title" required>
+                <label for="sessionTitle${i}" class="label">Title</label>
+                <input type="text" id="sessionTitle${i}" class="input-field" required>
           </div>
-  
+
           <div class="input-box">
-            <input type="text" class="input-field" placeholder="Session Topic" required>
+                <label for="sessionTopic${i}" class="label">Topic</label>
+                <input type="text" id="sessionTopic${i}" class="input-field" required>
           </div>
 
           <div class="input-box">
@@ -73,57 +75,40 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    document.getElementById("submit").addEventListener("click", function (event) {
+    document.getElementById("submitButton").addEventListener("click", function (event) {
         event.preventDefault();
 
-        let sessions = [];
+        let sessionsData = [];
 
-        const selectedSessionCount = parseInt(sessionCount.value);
-
-        for (let i = 1; i <= selectedSessionCount; i++) {
-            let session = {
-                title: document.getElementById(`sessionTitle${i}`).value,
-                topic: document.getElementById(`sessionTopic${i}`).value,
-                presentationType: document.getElementById(`presentationType${i}`).value,
-                presenter: document.getElementById(`presenter${i}`).value,
-                startTime: document.getElementById(`startTime${i}`).value,
-                endTime: document.getElementById(`endTime${i}`).value
+        for (let i = 1; i <= parseInt(sessionCount.value); i++) {
+            const session = {
+                Title: getValueById(`sessionTitle${i}`),
+                Topic: getValueById(`sessionTopic${i}`),
+                PresentationType: parseInt(getValueById(`presentationType${i}`)),
+                PresenterId: getValueById(`presenter${i}`),
+                StartTime: new Date(getValueById(`startTime${i}`)),
+                EndTime: new Date(getValueById(`endTime${i}`))
             };
 
-            sessions.push(session);
+            sessionsData.push(session);
         }
 
-        document.getElementById("sessionsJson").value = JSON.stringify(sessions);
-
-        addSelectedReviewers();
-
-        let form = document.querySelector("form");
-        form.submit();
-    });
-
-    // Event listener for checkboxes to add selected reviewers
-    document.querySelectorAll("#select input[type=checkbox]").forEach(function (checkbox) {
-        checkbox.addEventListener("change", addSelectedReviewers);
-    });
-
-    function addSelectedReviewers() {
         let selectedReviewers = [];
-        let checkboxes = document.querySelectorAll("#select input[type=checkbox]:checked");
-        checkboxes.forEach(function (checkbox) {
-            selectedReviewers.push(checkbox.id.split("_")[1]);
+
+        document.querySelectorAll('input[type="checkbox"][name^="reviewer_"]').forEach(function (checkbox) {
+            if (checkbox.checked) {
+                selectedReviewers.push(checkbox.value); // Add selected reviewer ID to the array
+            }
         });
 
-        let hiddenInput = document.querySelector("input[name='SelectedReviewers']");
-        if (!hiddenInput) {
-            hiddenInput = document.createElement("input");
-            hiddenInput.setAttribute("type", "hidden");
-            hiddenInput.setAttribute("name", "SelectedReviewers");
-            hiddenInput.setAttribute("value", "");
-            let form = document.querySelector("form");
-            form.appendChild(hiddenInput);
-        }
-        hiddenInput.value = selectedReviewers.join(",");
+        document.getElementById("sessionsData").value = JSON.stringify(sessionsData);
+        document.getElementById("selectedReviewers").value = JSON.stringify(selectedReviewers);
+        
+        document.getElementById("conferenceForm").submit();
+    });
+
+    function getValueById(id) {
+        const element = document.getElementById(id);
+        return element ? element.value : "";
     }
-
-
 });

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using ConferenceManagementWebApp.Enums;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 
 namespace ConferenceManagementWebApp.Models;
@@ -18,8 +19,14 @@ public class Session
     public string Topic { get; set; }
 
     [Required]
+    public DateTime StartTime { get; set; }
+
+    [Required]
+    public DateTime EndTime { get; set; }
+
+    [Required]
     [StringLength(50)]
-    public string PresentationType { get; set; }
+    public PresentationTypes PresentationType { get; set; }
 
     [Required]
     public ApplicationUser Presenter { get; set; }

@@ -1,5 +1,6 @@
 ﻿using ConferenceManagementWebApp.Enums;
 using ConferenceManagementWebApp.Models;
+using ConferenceManagementWebApp.ViewModels.SessionViewModels;
 
 namespace ConferenceManagementWebApp.ViewModels.ConferenceViewModels;
 
@@ -15,12 +16,12 @@ public class ConferenceCreateViewModel
 
     public DateTime EndTime { get; set; }
 
-    public ICollection<ApplicationUser> AllReviewers { get; set; }
+    public List<ApplicationUser> AllReviewers { get; set; }
 
-    public ICollection<string> SelectedReviewers { get; set; }
+    public List<string> SelectedReviewers { get; set; }
 
-    public ICollection<Session> Sessions { get; set; }
+    public List<string> SessionsData { get; set; }
 
-    public ICollection<ApplicationUser> AllPresenters { get; set; }
+    public List<ApplicationUser> AllPresenters { get; set; }
 
 }

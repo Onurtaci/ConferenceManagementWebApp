@@ -5,6 +5,7 @@ using ConferenceManagementWebApp.ViewModels.ConferenceViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ConferenceManagementWebApp.Controllers;
 
@@ -18,11 +19,6 @@ public class ConferenceController : Controller
     {
         _context = context;
         _userManager = userManager;
-    }
-
-    public IActionResult Index()
-    {
-        return View();
     }
 
     public async Task<IActionResult> Create()
@@ -44,12 +40,6 @@ public class ConferenceController : Controller
     {
         if (ModelState.IsValid)
         {
-            var user = _userManager.GetUserAsync(User).Result;
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var conference = new Conference
             {
                 Id = Guid.NewGuid().ToString(),
@@ -58,13 +48,47 @@ public class ConferenceController : Controller
                 Venue = model.Venue,
                 StartTime = model.StartTime,
                 EndTime = model.EndTime,
-                Organizer = user,
+                Organizer = await _userManager.GetUserAsync(User)
             };
 
-            _context.Conferences.Add(conference);
-            _context.SaveChanges();
+            var selectedReviewers = JsonConvert.DeserializeObject<List<string>>(model.SelectedReviewers[0]);
 
-            return RedirectToAction("Index");
+            foreach (var reviewerId in selectedReviewers)
+            {
+                var reviewer = await _userManager.FindByIdAsync(reviewerId);
+
+                if (reviewer is not null)
+                {
+                    conference.ConferenceReviewers.Add(new ConferenceReviewer
+                    {
+                        Conference = conference,
+                        Reviewer = reviewer
+                    });
+                }
+            }
+
+            var sessionsData = model.SessionsData;
+
+            //foreach (var sessionData in sessionsData)
+            //{
+            //    var session = new Session
+            //    {
+            //        Id = Guid.NewGuid().ToString(),
+            //        Title = sessionData.Title,
+            //        Topic = sessionData.Topic,
+            //        StartTime = sessionData.StartTime,
+            //        EndTime = sessionData.EndTime,
+            //        Presenter = await _userManager.FindByIdAsync(sessionData.PresenterId),
+            //        Conference = conference
+            //    };
+
+            //    conference.Sessions.Add(session);
+            //}
+
+            await _context.Conferences.AddAsync(conference);
+            await _context.SaveChangesAsync();
+
+            return View("Home/Index");
         }
 
         return View(model);
