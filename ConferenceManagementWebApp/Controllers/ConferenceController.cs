@@ -167,6 +167,14 @@ public class ConferenceController : Controller
                 Conference = conference
             };
 
+            foreach (var attendeeInConference in conference.ConferenceAttendees)
+            {
+                if (attendeeInConference.AttendeeId == attendee.Id)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
             conference.ConferenceAttendees.Add(conferenceAttendee);
 
             await _context.ConferenceAttendees.AddAsync(conferenceAttendee);
