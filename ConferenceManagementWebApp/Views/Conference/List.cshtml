@@ -44,7 +44,9 @@
                 <td>@conference.StartDate</td>
                 <td>@conference.EndDate</td>
                 <td>@conference.OrganizerFullName</td>
-                <td><button>Sessions</button></td>
+                <td><button>
+                    <a asp-controller="Session" asp-action="List" asp-route-conferenceId="@conference.Id">Sessions</a>
+                </button></td>
                 <td>
                     <button>
                         <a asp-controller="Conference" asp-action="Join" asp-route-conferenceId="@conference.Id">Join</a>

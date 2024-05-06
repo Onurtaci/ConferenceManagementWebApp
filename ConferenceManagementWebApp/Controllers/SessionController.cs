@@ -20,18 +20,41 @@ public class SessionController : Controller
         _userManager = userManager;
     }
 
-    //public async Task <IActionResult> List(string conferenceId)
-    //{
-    //    var conference = await _context.Conferences
-    //        .Include(c => c.Sessions)
-    //        .FirstOrDefaultAsync(c => c.Id == conferenceId);
+    public async Task<IActionResult> List(string conferenceId)
+    {
+        var model = new List<SessionListViewModel>();
 
-    //    var model = new SessionListViewModel
-    //    {
-    //        ConferenceId = conferenceId,
-    //        Sessions = conference.Sessions
-    //    };
+        var conference = await _context.Conferences
+            .Include(c => c.Sessions)
+            .Include(c => c.Organizer)
+            .FirstOrDefaultAsync(c => c.Id == conferenceId);
 
-    //    return View(model);
-    //}
+        if (conference == null)
+        {
+            return NotFound();
+        }
+
+        foreach (var conferenceSession in conference.Sessions)
+        {
+            var session = await _context.Sessions
+                .Include(s => s.Presenter)
+                .FirstOrDefaultAsync(s => s.Id == conferenceSession.Id);
+
+            if (session != null)
+            {
+                model.Add(new SessionListViewModel
+                {
+                    SessionId = session.Id,
+                    Title = session.Title,
+                    Topic = session.Topic,
+                    StartTime = session.StartTime,
+                    EndTime = session.EndTime,
+                    PresentationType = session.PresentationType,
+                    PresenterFullName = session.Presenter.FirstName + " " + session.Presenter.LastName
+                });
+            }
+        }
+
+        return View(model);
+    }
 }

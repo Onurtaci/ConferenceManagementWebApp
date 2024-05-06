@@ -1,0 +1,48 @@
+﻿@using ConferenceManagementWebApp.ViewModels.SessionViewModels;
+@model List<SessionListViewModel>;
+
+@{
+    ViewBag.Title = "Sessions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/base.css">
+<link rel="stylesheet" href="~/css/table.css">
+<title>Sessions</title>
+
+<header class="header">
+    <a asp-controller="Home" asp-action="Index" class="logo">Conference Management System</a>
+    <nav class="navbar">
+        <a asp-controller="Home" asp-action="Index">Home</a>
+        <a asp-controller="Home" asp-action="Search">Search</a>
+        <a asp-controller="Home" asp-action="Notifications">Notifications</a>
+        <a asp-controller="Home" asp-action="Profile">Profile</a>
+        <a asp-controller="Account" asp-action="Logout">Logout</a>
+    </nav>
+</header>
+
+<div class="container">
+    <h1>Sessions</h1>
+    <table class="conference-table">
+        <tr>
+            <th>Title</th>
+            <th>Topic</th>
+            <th>Presentation Type</th>
+            <th>Presenter</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+        </tr>
+
+        @foreach (var session in Model)
+        {
+            <tr>
+                <td>@session.Title</td>
+                <td>@session.Topic</td>
+                <td>@session.PresentationType</td>
+                <td>@session.PresenterFullName</td>
+                <td>@session.StartTime</td>
+                <td>@session.EndTime</td>
+            </tr>
+        }
+        </table>
+</div>
