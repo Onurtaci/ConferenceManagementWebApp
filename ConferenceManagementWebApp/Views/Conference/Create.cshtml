@@ -8,6 +8,7 @@
 
 <link rel="stylesheet" href="~/css/base.css">
 <link rel="stylesheet" href="~/css/conferenceCreate.css">
+<title>Organize Conference</title>
 
 <header class="header">
     <a asp-controller="Home" asp-action="Index" class="logo">Conference Management System</a>
@@ -26,21 +27,24 @@
     <form asp-action="Create" asp-controller="Conference" method="post" id="conferenceForm">
 
         <div class="input-box">
+            <label for="Title">Title</label>
             <input asp-for="Title" class="input-field" placeholder="Title" />
         </div>
         <div class="input-box">
+            <label for="Description">Description</label>
             <textarea asp-for="Description" class="input-field" placeholder="Description"></textarea>
         </div>
         <div class="input-box">
+            <label for="Venue">Venue</label>
             <input asp-for="Venue" class="input-field" placeholder="Venue" />
         </div>
         <div class="input-box">
             <label for="startDate">Start Time</label>
-            <input asp-for="StartTime" type="datetime-local" class="input-field" id="startDate" />
+            <input asp-for="StartDate" type="datetime-local" class="input-field" id="startDate" />
         </div>
         <div class="input-box">
             <label for="endDate">End Time</label>
-            <input asp-for="EndTime" type="datetime-local" class="input-field" id="endDate" />
+            <input asp-for="EndDate" type="datetime-local" class="input-field" id="endDate" />
         </div>
 
         <label class="label">Choose Reviewers</label>

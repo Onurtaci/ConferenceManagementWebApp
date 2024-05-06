@@ -23,6 +23,7 @@ public class ConferenceController : Controller
         _userManager = userManager;
     }
 
+
     [Authorize(Roles = "Organizer")]
     public async Task<IActionResult> Create()
     {
@@ -38,6 +39,7 @@ public class ConferenceController : Controller
         return View(model);
     }
 
+
     [HttpPost]
     [Authorize(Roles = "Organizer")]
     public async Task<IActionResult> Create(ConferenceCreateViewModel model)
@@ -50,8 +52,8 @@ public class ConferenceController : Controller
                 Title = model.Title,
                 Description = model.Description,
                 Venue = model.Venue,
-                StartDate = model.StartTime,
-                EndDate = model.EndTime,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
                 Organizer = await _userManager.GetUserAsync(User)
             };
 
@@ -150,10 +152,52 @@ public class ConferenceController : Controller
         return View(model);
     }
 
+
+    [Authorize(Roles = "Attendee, Presenter, Reviewer, Author")]
+    public async Task<IActionResult> ListAttendedConferences()
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        var conferences = await _context.Conferences
+            .Include(c => c.Organizer)
+            .Include(c => c.ConferenceReviewers)
+            .Include(c => c.Sessions)
+            .Include(c => c.ConferenceAttendees)
+            .ToListAsync();
+
+        var model = new List<ConferenceListViewModel>();
+
+        foreach (var conference in conferences)
+        {
+            foreach (var attendee in conference.ConferenceAttendees)
+            {
+                if (attendee.AttendeeId == user.Id)
+                {
+                    var conferenceModel = new ConferenceListViewModel
+                    {
+                        Id = conference.Id,
+                        Title = conference.Title,
+                        Description = conference.Description,
+                        Venue = conference.Venue,
+                        StartDate = conference.StartDate,
+                        EndDate = conference.EndDate,
+                        OrganizerFullName = $"{conference.Organizer.FirstName} {conference.Organizer.LastName}",
+                        Sessions = conference.Sessions
+                    };
+
+                    model.Add(conferenceModel);
+                }
+            }
+        }
+
+        return View(model);
+    }
+
+
+    [Authorize(Roles = "Attendee, Presenter, Reviewer, Author")]
     public async Task<IActionResult> Join(string conferenceId)
     {
         var conference = await _context.Conferences
-            .Include(c => c.ConferenceAttendees)
             .FirstOrDefaultAsync(c => c.Id == conferenceId);
 
         var attendee = await _userManager.GetUserAsync(User);
@@ -183,4 +227,79 @@ public class ConferenceController : Controller
 
         return RedirectToAction("Index", "Home");
     }
+
+
+    [Authorize(Roles = "Attendee, Presenter, Reviewer, Author")]
+    public async Task<IActionResult> Disjoin(string conferenceId)
+    {
+        var conference = await _context.Conferences
+            .FirstOrDefaultAsync(c => c.Id == conferenceId);
+
+        var user = await _userManager.GetUserAsync(User);
+
+        if (conference is not null && user is not null)
+        {
+            var conferenceAttendee = await _context.ConferenceAttendees
+                .FirstOrDefaultAsync(ca => ca.ConferenceId == conferenceId && ca.AttendeeId == user.Id);
+
+            if (conferenceAttendee is not null)
+            {
+                conference.ConferenceAttendees.Remove(conferenceAttendee);
+
+                _context.ConferenceAttendees.Remove(conferenceAttendee);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return RedirectToAction("Index", "Home");
+    }
+
+
+    //[Authorize(Roles = "Attendee, Presenter, Reviewer, Author")]
+    //public async Task<IActionResult> GiveFeedback(string conferenceId)
+    //{
+    //    var conference = await _context.Conferences
+    //        .Include(c => c.Sessions)
+    //        .FirstOrDefaultAsync(c => c.Id == conferenceId);
+
+    //    var user = await _userManager.GetUserAsync(User);
+
+    //    var model = new ConferenceFeedbackViewModel
+    //    {
+    //        ConferenceId = conferenceId,
+    //        UserId = user.Id
+    //    };
+
+    //    return View(model);
+    //}
+
+    //[HttpPost]
+    //[Authorize(Roles = "Attendee, Presenter, Reviewer, Author")]
+    //public async Task<IActionResult> GiveFeedback(ConferenceFeedbackViewModel model)
+    //{
+    //    if (ModelState.IsValid)
+    //    {
+    //        var conference = await _context.Conferences
+    //            .Include(c => c.Sessions)
+    //            .FirstOrDefaultAsync(c => c.Id == model.ConferenceId);
+
+    //        var user = await _userManager.GetUserAsync(User);
+
+    //        var feedback = new Feedback
+    //        {
+    //            Id = Guid.NewGuid().ToString(),
+    //            Rating = model.Rating,
+    //            Comment = model.Comment,
+    //            Attendee = user,
+    //            Conference = conference
+    //        };
+
+    //        conference.Feedbacks.Add(feedback);
+
+    //        await _context.Feedbacks.AddAsync(feedback);
+    //        await _context.SaveChangesAsync();
+    //    }
+
+    //    return View(model);
+    //}
 }

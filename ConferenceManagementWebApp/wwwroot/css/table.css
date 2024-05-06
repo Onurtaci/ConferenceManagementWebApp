@@ -1,13 +1,13 @@
 ﻿.container {
     margin: 100px auto;
-    width: 80%;
+    width: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
 
-.upcoming-conferences-title {
+.title {
     margin-top: 20px;
 }
 
@@ -50,7 +50,19 @@
             background-color: #FF5733;
         }
 
+        .conference-table button.disjoin {
+            background-color: rgb(180, 0, 0);
+        }
+
+            .conference-table button.disjoin:hover {
+                background-color: black;
+            }
+
         .conference-table button a {
             text-decoration: none;
             color: white;
         }
+
+.editbutton {
+    width: 50%;
+}
