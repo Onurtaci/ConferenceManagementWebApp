@@ -1,0 +1,58 @@
+﻿@model List<ConferenceManagementWebApp.ViewModels.ConferenceViewModels.ConferenceListViewModel>;
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/base.css">
+<link rel="stylesheet" href="~/css/conferenceList.css">
+
+<header class="header">
+    <a asp-controller="Home" asp-action="Index" class="logo">Conference Management System</a>
+    <nav class="navbar">
+        <a asp-controller="Home" asp-action="Index">Home</a>
+        <a asp-controller="Home" asp-action="Search">Search</a>
+        <a asp-controller="Home" asp-action="Notifications">Notifications</a>
+        <a asp-controller="Home" asp-action="Profile">Profile</a>
+        <a asp-controller="Account" asp-action="Logout">Logout</a>
+    </nav>
+</header>
+
+<div class="container">
+    <h1 class="upcoming-conferences-title">Upcoming Conferences</h1>
+    <table class="conference-table">
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Venue</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Organizer Name</th>
+            <th>Sessions</th>
+            <th>Join</th>
+        </tr>
+
+        @foreach (var conference in Model)
+        {
+            <tr>
+                <td>@conference.Title</td>
+                <td>@conference.Description</td>
+                <td>@conference.Venue</td>
+                <td>@conference.StartDate</td>
+                <td>@conference.EndDate</td>
+                <td>@conference.OrganizerFullName</td>
+                <td><button>Sessions</button></td>
+                <td>
+                    <button>
+                        <a asp-controller="Conference" asp-action="Join" asp-route-conferenceId="@conference.Id">Join</a>
+                    </button>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+
+

@@ -23,8 +23,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.Title).IsRequired().HasMaxLength(50);
             entity.Property(e => e.Description).HasMaxLength(500);
             entity.Property(e => e.Venue).IsRequired().HasMaxLength(50);
-            entity.Property(e => e.StartTime).IsRequired();
-            entity.Property(e => e.EndTime).IsRequired();
+            entity.Property(e => e.StartDate).IsRequired();
+            entity.Property(e => e.EndDate).IsRequired();
             entity.HasOne(e => e.Organizer);
 
             entity.HasMany(e => e.Sessions);

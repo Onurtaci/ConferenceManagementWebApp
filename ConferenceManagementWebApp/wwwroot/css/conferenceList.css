@@ -1,0 +1,56 @@
+﻿.container {
+    margin: 100px auto;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.upcoming-conferences-title {
+    margin-top: 20px;
+}
+
+.conference-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+
+    .conference-table th, .conference-table td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .conference-table th {
+        background-color: #aaddf6;
+    }
+
+    .conference-table tr:hover {
+        background-color: #cdebf9;
+    }
+
+    .conference-table button {
+        background-color: #18a3da;
+        color: white;
+        font-weight: bold;
+        border: none;
+        padding: 8px 12px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+        .conference-table button:hover {
+            background-color: #FF5733;
+        }
+
+        .conference-table button a {
+            text-decoration: none;
+            color: white;
+        }

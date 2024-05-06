@@ -21,10 +21,10 @@ public class Conference
     public string Venue { get; set; }
 
     [Required]
-    public DateTime StartTime { get; set; }
+    public DateTime StartDate { get; set; }
 
     [Required]
-    public DateTime EndTime { get; set; }
+    public DateTime EndDate { get; set; }
 
     [Required]
     public ApplicationUser Organizer { get; set; }

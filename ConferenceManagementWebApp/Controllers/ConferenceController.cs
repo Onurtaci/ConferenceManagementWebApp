@@ -6,11 +6,12 @@ using ConferenceManagementWebApp.ViewModels.SessionViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace ConferenceManagementWebApp.Controllers;
 
-[Authorize(Roles = "Organizer")]
+[Authorize]
 public class ConferenceController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -22,6 +23,7 @@ public class ConferenceController : Controller
         _userManager = userManager;
     }
 
+    [Authorize(Roles = "Organizer")]
     public async Task<IActionResult> Create()
     {
         var reviewers = await _userManager.GetUsersInRoleAsync("Reviewer");
@@ -37,6 +39,7 @@ public class ConferenceController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = "Organizer")]
     public async Task<IActionResult> Create(ConferenceCreateViewModel model)
     {
         if (ModelState.IsValid)
@@ -47,8 +50,8 @@ public class ConferenceController : Controller
                 Title = model.Title,
                 Description = model.Description,
                 Venue = model.Venue,
-                StartTime = model.StartTime,
-                EndTime = model.EndTime,
+                StartDate = model.StartTime,
+                EndDate = model.EndTime,
                 Organizer = await _userManager.GetUserAsync(User)
             };
 
@@ -92,7 +95,7 @@ public class ConferenceController : Controller
                         Topic = sessionData.Topic,
                         StartTime = sessionData.StartTime,
                         EndTime = sessionData.EndTime,
-                        PresentationType = (PresentationTypes) Enum.Parse(typeof(PresentationTypes), sessionData.PresentationType.ToString()),
+                        PresentationType = (PresentationTypes)Enum.Parse(typeof(PresentationTypes), sessionData.PresentationType.ToString()),
                         Presenter = presenter,
                         Conference = conference
                     };
@@ -104,7 +107,7 @@ public class ConferenceController : Controller
                 }
             }
 
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
         var allReviewers = await _userManager.GetUsersInRoleAsync("Reviewer");
@@ -114,5 +117,62 @@ public class ConferenceController : Controller
         model.AllPresenters = allPresenters.ToList();
 
         return View(model);
+    }
+
+
+    public async Task<IActionResult> List()
+    {
+        var conferences = await _context.Conferences
+            .Include(c => c.Organizer)
+            .Include(c => c.ConferenceReviewers)
+            .Include(c => c.Sessions)
+            .ToListAsync();
+
+        var model = new List<ConferenceListViewModel>();
+
+        foreach (var conference in conferences)
+        {
+            var conferenceModel = new ConferenceListViewModel
+            {
+                Id = conference.Id,
+                Title = conference.Title,
+                Description = conference.Description,
+                Venue = conference.Venue,
+                StartDate = conference.StartDate,
+                EndDate = conference.EndDate,
+                OrganizerFullName = $"{conference.Organizer.FirstName} {conference.Organizer.LastName}",
+                Sessions = conference.Sessions
+            };
+
+            model.Add(conferenceModel);
+        }
+
+        return View(model);
+    }
+
+    public async Task<IActionResult> Join(string conferenceId)
+    {
+        var conference = await _context.Conferences
+            .Include(c => c.ConferenceAttendees)
+            .FirstOrDefaultAsync(c => c.Id == conferenceId);
+
+        var attendee = await _userManager.GetUserAsync(User);
+
+        if (conference is not null && attendee is not null)
+        {
+            var conferenceAttendee = new ConferenceAttendee
+            {
+                Id = Guid.NewGuid().ToString(),
+                Attendee = attendee,
+                Conference = conference
+            };
+
+            conference.ConferenceAttendees.Add(conferenceAttendee);
+
+            await _context.ConferenceAttendees.AddAsync(conferenceAttendee);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction("Index", "Home");
     }
 }
