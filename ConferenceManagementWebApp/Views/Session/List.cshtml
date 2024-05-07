@@ -31,6 +31,10 @@
             <th>Presenter</th>
             <th>Start Time</th>
             <th>End Time</th>
+            @if (User.IsInRole("Author"))
+            {
+                <th>Add Paper</th>
+            }
         </tr>
 
         @foreach (var session in Model)
@@ -42,7 +46,12 @@
                 <td>@session.PresenterFullName</td>
                 <td>@session.StartTime</td>
                 <td>@session.EndTime</td>
+                @if (User.IsInRole("Author"))
+                {
+                    <td><a asp-controller="Paper" asp-action="Create" asp-route-sessionId="@session.SessionId">Add Paper</a></td>
+                }
+
             </tr>
         }
-        </table>
+    </table>
 </div>

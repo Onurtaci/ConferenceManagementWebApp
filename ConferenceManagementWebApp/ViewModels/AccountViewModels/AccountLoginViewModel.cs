@@ -1,13 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ConferenceManagementWebApp.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace ConferenceManagementWebApp.ViewModels.AccountViewModels;
 
 public class AccountLoginViewModel
 {
-    [Required(ErrorMessage = "Username is required.")]
+    [Required(ErrorMessage = Messages.UsernameRequired)]
     public string Username { get; set; }
 
-    [Required(ErrorMessage = "Password is required.")]
+    [Required(ErrorMessage = Messages.PasswordRequired)]
     [DataType(DataType.Password)]
     public string Password { get; set; }
 

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ConferenceManagementWebApp.Constants;
+using Newtonsoft.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace ConferenceManagementWebApp.Models;
 
@@ -8,10 +10,11 @@ public class Feedback
     [Required]
     public string Id { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = Messages.RatingRequired)]
+    [Range(0, 5, ErrorMessage = Messages.RatingRange)]
     public int Rating { get; set; }
 
-    [StringLength(500)]
+    [StringLength(500, ErrorMessage = Messages.CommentMaxLength)]
     public string? Comment { get; set; }
 
     [Required]

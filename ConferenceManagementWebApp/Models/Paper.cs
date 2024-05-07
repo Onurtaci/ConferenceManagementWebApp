@@ -1,4 +1,5 @@
-﻿using ConferenceManagementWebApp.Enums;
+﻿using ConferenceManagementWebApp.Constants;
+using ConferenceManagementWebApp.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,27 +11,31 @@ public class Paper
     [Required]
     public string Id { get; set; }
 
-    [Required]
-    [StringLength(50)]
+    [Required(ErrorMessage = Messages.TitleRequired)]
+    [StringLength(50, ErrorMessage = Messages.TitleMaxLength)]
     public string Title { get; set; }
 
-    [StringLength(50)]
+    [Required(ErrorMessage = Messages.AbstractRequired)]
+    [StringLength(50, ErrorMessage = Messages.AbstractMaxLength)]
     public string Abstract { get; set; }
 
-    [StringLength(50)]
+    [Required(ErrorMessage = Messages.KeywordsRequired)]
+    [StringLength(50, ErrorMessage = Messages.KeywordsMaxLength)]
     public string Keywords { get; set; }
 
     [NotMapped] // db will not contain File
     public IFormFile File { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = Messages.FileRequired)]
     public byte[] FileBytes { get; set; }
 
+    [Required]
+    [EnumDataType(typeof(Status), ErrorMessage = Messages.StatusInvalid)]
     public Status Status { get; set; }
 
     public Session Session { get; set; }
 
     public ApplicationUser Author { get; set; }
 
-    public ICollection<Review>? Reviews { get; set; } // this sentence maybe will changed
+    public Review Review { get; set; }
 }

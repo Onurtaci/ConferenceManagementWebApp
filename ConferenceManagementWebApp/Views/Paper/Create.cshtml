@@ -1,0 +1,53 @@
+﻿@using ConferenceManagementWebApp.ViewModels.PaperViewModels;
+@model PaperCreateViewModel;
+
+@{
+    ViewBag.Title = "Create Paper";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/base.css">
+<link rel="stylesheet" href="~/css/paperCreate.css">
+<title>Create Paper</title>
+
+<header class="header">
+    <a asp-controller="Home" asp-action="Index" class="logo">Conference Management System</a>
+    <nav class="navbar">
+        <a asp-controller="Home" asp-action="Index">Home</a>
+        <a asp-controller="Home" asp-action="Search">Search</a>
+        <a asp-controller="Home" asp-action="Notifications">Notifications</a>
+        <a asp-controller="Home" asp-action="Profile">Profile</a>
+        <a asp-controller="Account" asp-action="Logout">Logout</a>
+    </nav>
+</header>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="review-box">
+        <div class="review-header">
+            <header>Upload Paper</header>
+        </div>
+        <div class="input-box">
+            <label for="Title">Title</label>
+            <input asp-for="Title" class="input-field" placeholder="Title" />
+        </div>
+        <div class="input-box">
+            <label for="Abstract">Abstract</label>
+            <textarea asp-for="Abstract" class="input-field" placeholder="Abstract"></textarea>
+        </div>
+        <div class="input-box">
+            <label for="Keywords">Keywords</label>
+            <input asp-for="Keywords" class="input-field" placeholder="Keywords" />
+        </div>
+        <div class="input-box">
+            <label for="File">File</label>
+            <input asp-for="File" type="file" accept=".pdf" class="input-file" />
+        </div>
+        <div class="input-submit">
+            <button class="submit-btn" id="submitButton"></button>
+            <label for="submitButton">Upload Paper</label>
+        </div>
+        <div>
+            <input asp-for="SessionId" type="hidden" value="@Model.SessionId" />
+        </div>
+    </div>
+</form>
