@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ConferenceManagementWebApp.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace ConferenceManagementWebApp.Models;
 
@@ -8,22 +9,28 @@ public class Conference
     [Required]
     public string Id { get; set; }
 
-    [Required]
-    [StringLength(50)]
+    [Required(ErrorMessage = Messages.TitleRequired)]
+    [StringLength(50, ErrorMessage = Messages.TitleMaxLength)]
     public string Title { get; set; }
 
+    [Required(ErrorMessage = Messages.DescriptionRequired)]
     [DataType(DataType.MultilineText)]
-    [StringLength(500)]
+    [StringLength(500, ErrorMessage = Messages.DescriptionMaxLength)]
     public string Description { get; set; }
 
-    [Required]
-    [StringLength(50)]
+    [Required(ErrorMessage = Messages.VenueRequired)]
+    [StringLength(50, ErrorMessage = Messages.VenueMaxLength)]
     public string Venue { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = Messages.StartDateRequired)]
+    [DataType(DataType.DateTime)]
+    [Display (Name = "Start Date")]
     public DateTime StartDate { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = Messages.EndDateRequired)]
+    [DataType(DataType.DateTime)]
+    [Display (Name = "End Date")]
+    [Compare(nameof(StartDate), ErrorMessage = Messages.StartDateBeforeEndDate)]
     public DateTime EndDate { get; set; }
 
     [Required]

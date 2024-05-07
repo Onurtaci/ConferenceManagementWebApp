@@ -1,4 +1,5 @@
-﻿using ConferenceManagementWebApp.Enums;
+﻿using ConferenceManagementWebApp.Constants;
+using ConferenceManagementWebApp.Enums;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,22 +11,28 @@ public class Session
     [Required]
     public string Id { get; set; }
 
-    [Required]
-    [StringLength(50)]
+    [Required(ErrorMessage = Messages.TitleRequired)]
+    [StringLength(50, ErrorMessage = Messages.TitleMaxLength)]
     public string Title { get; set; }
 
-    [Required]
-    [StringLength(50)]
+    [Required(ErrorMessage = Messages.TopicRequired)]
+    [StringLength(50, ErrorMessage = Messages.TopicMaxLength)]
     public string Topic { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = Messages.SessionStartTimeRequired)]
+    [DataType(DataType.DateTime)]
+    [Display (Name = "Start Time")]
     public DateTime StartTime { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = Messages.SessionEndTimeRequired)]
+    [DataType(DataType.DateTime)]
+    [Display(Name = "End Time")]
+    [Compare(nameof(StartTime), ErrorMessage = Messages.SessionStartTimeBeforeEndTime)]
     public DateTime EndTime { get; set; }
 
-    [Required]
-    [StringLength(50)]
+    [Required (ErrorMessage = Messages.PresentationTypeRequired)]
+    [EnumDataType(typeof(PresentationTypes), ErrorMessage = Messages.PresentationTypeInvalid)]
+    [Display(Name = "Presentation Type")]
     public PresentationTypes PresentationType { get; set; }
 
     [Required]

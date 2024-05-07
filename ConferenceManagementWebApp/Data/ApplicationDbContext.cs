@@ -56,7 +56,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.FileBytes).IsRequired();
             entity.HasOne(e => e.Author);
             entity.HasOne(e => e.Session).WithMany(e => e.Papers).OnDelete(DeleteBehavior.Restrict);
-            entity.HasMany(e => e.Reviews);
+            entity.HasOne(e => e.Review);
         });
 
         modelBuilder.Entity<Feedback>(entity =>
@@ -78,8 +78,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.Recommendation).IsRequired();
             entity.Property(e => e.Recommendation).HasMaxLength(50);
             entity.Property(e => e.Comment).HasMaxLength(500);
-            entity.HasOne(e => e.Paper).WithMany(e => e.Reviews).OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(e => e.Reviewer);
+            entity.HasOne(e => e.Paper).WithOne(e => e.Review).OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Notification>(entity =>
