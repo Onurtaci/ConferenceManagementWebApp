@@ -1,4 +1,5 @@
-﻿using ConferenceManagementWebApp.Models;
+﻿using ConferenceManagementWebApp.Constants;
+using ConferenceManagementWebApp.Models;
 using ConferenceManagementWebApp.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -34,7 +35,7 @@ public class AccountController : Controller
             {
                 return RedirectToAction("Index", "Home");
             }
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            ModelState.AddModelError(string.Empty, Messages.LoginAttemptInvalid);
         }
         return View(model);
     }
@@ -69,7 +70,7 @@ public class AccountController : Controller
                 }
                 await _userManager.AddToRoleAsync(user, model.Role);
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index", "Home"); // will change with the actual role
+                return RedirectToAction("Index", "Home");
             }
             foreach (var error in result.Errors)
             {

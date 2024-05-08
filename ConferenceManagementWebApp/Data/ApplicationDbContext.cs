@@ -75,7 +75,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.ToTable("Reviews");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).IsRequired();
-            entity.Property(e => e.Recommendation).IsRequired();
+            entity.Property(e => e.Score);
             entity.Property(e => e.Recommendation).HasMaxLength(50);
             entity.Property(e => e.Comment).HasMaxLength(500);
             entity.HasOne(e => e.Reviewer);

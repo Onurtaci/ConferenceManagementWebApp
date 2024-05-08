@@ -1,14 +1,14 @@
 ﻿@using ConferenceManagementWebApp.ViewModels.ConferenceViewModels;
-@model List<ConferenceListViewModel>;
+@model List<ConferenceListOrganizedConferencesViewModel>;
 
 @{
-    ViewData["Title"] = "List";
+    ViewBag.Title = "List Organized Conferences";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <link rel="stylesheet" href="~/css/base.css">
 <link rel="stylesheet" href="~/css/table.css">
-<title>Upcoming Conferences</title>
+<title>Organized Conferences</title>
 
 <header class="header">
     <a asp-controller="Home" asp-action="Index" class="logo">Conference Management System</a>
@@ -22,7 +22,7 @@
 </header>
 
 <div class="container">
-    <h1 class="upcoming-conferences-title">Upcoming Conferences</h1>
+    <h1 class="upcoming-conferences-title">Organized Conferences</h1>
     <table class="conference-table">
         <tr>
             <th>Title</th>
@@ -30,9 +30,8 @@
             <th>Venue</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Organizer Name</th>
             <th>Sessions</th>
-            <th>Join</th>
+            <th>Attendees</th>
         </tr>
 
         @foreach (var conference in Model)
@@ -43,13 +42,14 @@
                 <td>@conference.Venue</td>
                 <td>@conference.StartDate</td>
                 <td>@conference.EndDate</td>
-                <td>@conference.OrganizerFullName</td>
-                <td><button>
-                    <a asp-controller="Session" asp-action="List" asp-route-conferenceId="@conference.Id">Sessions</a>
-                </button></td>
                 <td>
                     <button>
-                        <a asp-controller="Conference" asp-action="Join" asp-route-conferenceId="@conference.Id">Join</a>
+                        <a asp-controller="Session" asp-action="List" asp-route-conferenceId="@conference.Id">Sessions</a>
+                    </button>
+                </td>
+                <td>
+                    <button>
+                        <a asp-controller="Conference" asp-action="ListAttendees" asp-route-conferenceId="@conference.Id">Attendees</a>
                     </button>
                 </td>
             </tr>
@@ -57,6 +57,3 @@
 
     </table>
 </div>
-
-
-

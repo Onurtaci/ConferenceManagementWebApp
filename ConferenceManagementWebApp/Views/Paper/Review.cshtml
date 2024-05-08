@@ -1,0 +1,52 @@
+﻿@using ConferenceManagementWebApp.Enums
+@using ConferenceManagementWebApp.ViewModels.PaperViewModels;
+@model PaperReviewViewModel;
+
+@{
+    ViewBag.Title = "Review Paper";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/base.css">
+<link rel="stylesheet" href="~/css/table">
+<title>Review Paper</title>
+
+<header class="header">
+    <a asp-controller="Home" asp-action="Index" class="logo">Conference Management System</a>
+    <nav class="navbar">
+        <a asp-controller="Home" asp-action="Index">Home</a>
+        <a asp-controller="Home" asp-action="Search">Search</a>
+        <a asp-controller="Home" asp-action="Notifications">Notifications</a>
+        <a asp-controller="Home" asp-action="Profile">Profile</a>
+        <a asp-controller="Account" asp-action="Logout">Logout</a>
+    </nav>
+</header>
+
+<form asp-action="Review" method="post">
+    <div class="review-box">
+        <header>Review Paper</header>
+    </div>
+    <div class="input-box">
+        <label for="Score">Score</label>
+        <input asp-for="Score" class="input-field" placeholder="Score" />
+        <span asp-validation-for="Score" class="text-danger"></span>
+    </div>
+    <div class="input-box">
+        <label for="Comment">Comment</label>
+        <textarea asp-for="Comment" class="input-field" placeholder="Comment"></textarea>
+        <span asp-validation-for="Comment" class="text-danger"></span>
+    </div>
+    <div class="input-box">
+        <label for="Recommendation">Recommendation</label>
+        <select asp-for="Recommendation" class="input-field">
+            @foreach (var recommendation in Enum.GetValues(typeof(Recommendation)))
+            {
+                <option value="@recommendation">@recommendation</option>
+            }
+        </select>
+    </div>
+    <div class="input-submit">
+        <button class="submit-btn" id="submitButton"></button>
+        <label for="submitButton">Review Paper</label>
+    </div>
+</form>

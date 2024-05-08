@@ -1,0 +1,43 @@
+﻿@using ConferenceManagementWebApp.ViewModels.UserViewModels;
+@model List<UserListViewModel>;
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/base.css">
+<link rel="stylesheet" href="~/css/table.css">
+<title>Attendees</title>
+
+<header class="header">
+    <a asp-controller="Home" asp-action="Index" class="logo">Conference Management System</a>
+    <nav class="navbar">
+        <a asp-controller="Home" asp-action="Index">Home</a>
+        <a asp-controller="Home" asp-action="Search">Search</a>
+        <a asp-controller="Home" asp-action="Notifications">Notifications</a>
+        <a asp-controller="Home" asp-action="Profile">Profile</a>
+        <a asp-controller="Account" asp-action="Logout">Logout</a>
+    </nav>
+</header>
+
+<div class="container">
+    <h1 class="upcoming-conferences-title">Attendees</h1>
+    <table class="conference-table">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+            <th>Email</th>
+        </tr>
+
+        @foreach (var attendee in Model)
+        {
+            <tr>
+                <td>@attendee.FirstName</td>
+                <td>@attendee.LastName</td>
+                <td>@attendee.UserName</td>
+                <td>@attendee.Email</td>
+            </tr>
+        }
+    </table>

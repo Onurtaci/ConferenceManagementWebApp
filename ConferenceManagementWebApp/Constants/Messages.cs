@@ -12,6 +12,7 @@ public static class Messages
     public const string ConferenceNotCreated = "Conference not created!";
     public const string ConferenceNotUpdated = "Conference not updated!";
     public const string ConferenceNotDeleted = "Conference not deleted!";
+    public const string ConferenceEnded = "Conference has ended!";
 
     public const string SessionCreated = "Session created successfully!";
     public const string SessionUpdated = "Session updated successfully!";
@@ -94,6 +95,7 @@ public static class Messages
     public const string RoleInvalid = "Invalid role! It can be 'Organizer', 'Presenter', 'Reviewer', 'Attendee'";
     public const string StatusInvalid = "Invalid status! It can be 'Submitted', 'Under_Review', 'Accepted', 'Rejected'";
     public const string SessionTypeInvalid = "Invalid session type! It can be 'Oral', 'Poster', 'Workshop', Other";
+    public const string LoginAttemptInvalid = "Invalid login attempt!";
 
     public const string ReviewersDoNotSelected = "Reviewers not selected!";
 }

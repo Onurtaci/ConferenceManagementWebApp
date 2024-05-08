@@ -9,7 +9,7 @@ using Microsoft.Identity.Client;
 
 namespace ConferenceManagementWebApp.Controllers;
 
-[Authorize(Roles = "Author")]
+[Authorize]
 public class PaperController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -22,6 +22,7 @@ public class PaperController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Author")]
     public async Task<IActionResult> Create(string sessionId)
     {
         var user = await _userManager.GetUserAsync(User);
@@ -45,6 +46,7 @@ public class PaperController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = "Author")]
     public async Task<IActionResult> Create(PaperCreateViewModel model)
     {
         if (!ModelState.IsValid)
@@ -109,6 +111,115 @@ public class PaperController : Controller
         return RedirectToAction("Index", "Home");
     }
 
+    [HttpGet]
+    [Authorize(Roles = "Reviewer")]
+    public async Task<IActionResult> ListAssignedPapers()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        var papers = new List<PaperListAssignedViewModel>();
+
+        var reviews = _context.Reviews
+            .Include(r => r.Paper)
+            .ThenInclude(p => p.Session)
+            .Include(r => r.Reviewer)
+            .Where(r => r.Reviewer.Id == user.Id)
+            .ToList();
+
+        foreach (var review in reviews)
+        {
+            papers.Add(new PaperListAssignedViewModel
+            {
+                Id = review.Paper.Id,
+                SessionId = review.Paper.Session.Id,
+                Title = review.Paper.Title,
+                Abstract = review.Paper.Abstract,
+                Keywords = review.Paper.Keywords
+            });
+        }
+
+        return View(papers);
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "Reviewer")]
+    public async Task<IActionResult> Review(string paperId)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        var paper = _context.Papers.Find(paperId);
+        if (paper == null)
+        {
+            return NotFound();
+        }
+
+        var review = _context.Reviews
+            .Include(r => r.Paper)
+            .Include(r => r.Reviewer)
+            .FirstOrDefault(r => r.Paper.Id == paperId && r.Reviewer.Id == user.Id);
+
+        if (review == null)
+        {
+            return NotFound();
+        }
+
+        var model = new PaperReviewViewModel
+        {
+            PaperId = paperId
+        };
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "Reviewer")]
+    public async Task<IActionResult> Review(PaperReviewViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        var paper = _context.Papers.Find(model.PaperId);
+        if (paper == null)
+        {
+            return NotFound();
+        }
+
+        var review = _context.Reviews
+            .Include(r => r.Paper)
+            .Include(r => r.Reviewer)
+            .FirstOrDefault(r => r.Paper.Id == model.PaperId && r.Reviewer.Id == user.Id);
+
+        if (review == null)
+        {
+            return NotFound();
+        }
+
+        review.Score = int.Parse(model.Score);
+        review.Comment = model.Comment;
+        review.Recommendation = model.Recommendation;
+
+        _context.Reviews.Update(review);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("ListAssignedPapers");
+    }
+
     private ApplicationUser GetRandomReviewer(string sessionId)
     {
         var conference = _context.Conferences
@@ -122,5 +233,16 @@ public class PaperController : Controller
         var randomReviewerId = conferenceReviewers[random.Next(conferenceReviewers.Count)].ReviewerId;
 
         return _context.Users.Find(randomReviewerId);
+    }
+
+    private async Task<IActionResult> Download(string paperId)
+    {
+        var paper = _context.Papers.Find(paperId);
+        if (paper == null)
+        {
+            return NotFound();
+        }
+
+        return File(paper.FileBytes, "application/pdf", $"{paper.Title}.pdf");
     }
 }

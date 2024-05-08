@@ -19,6 +19,7 @@
 </header>
 
 <div class="button-container">
-    <button class="custom-button">Upcoming Conferences</button>
-    <button class="custom-button"><a asp-controller="Conference" asp-action="ListAttendedConferences">Attended Conferences</a></button>    <button class="custom-button">Assigned Papers</button>
+    <button class="custom-button"><a asp-controller="Conference" asp-action="ListUpcomingConferences">Upcoming Conferences</a></button>
+    <button class="custom-button"><a asp-controller="Conference" asp-action="ListAttendedConferences">Attended Conferences</a></button>
+    <button class="custom-button"><a asp-controller="Paper" asp-action="ListAssignedPapers">Assigned Papers</a></button>
 </div>

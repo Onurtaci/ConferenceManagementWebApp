@@ -1,0 +1,53 @@
+﻿@using ConferenceManagementWebApp.ViewModels.PaperViewModels;
+@model List<PaperListAssignedViewModel>;
+
+@{
+    ViewBag.Title = "List Assigned Papers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/base.css">
+<link rel="stylesheet" href="~/css/table.css">
+<title>Assigned Papers</title>
+
+<header class="header">
+    <a asp-controller="Home" asp-action="Index" class="logo">Conference Management System</a>
+    <nav class="navbar">
+        <a asp-controller="Home" asp-action="Index">Home</a>
+        <a asp-controller="Home" asp-action="Search">Search</a>
+        <a asp-controller="Home" asp-action="Notifications">Notifications</a>
+        <a asp-controller="Home" asp-action="Profile">Profile</a>
+        <a asp-controller="Account" asp-action="Logout">Logout</a>
+    </nav>
+</header>
+
+<div class="container">
+    <h1>Assigned Papers</h1>
+    <table class="conference-table">
+        <tr>
+            <th>Title</th>
+            <th>Abstract</th>
+            <th>Keywords</th>
+            <th>Paper</th>
+            <th>Review</th>
+        </tr>
+
+        @foreach (var paper in Model)
+        {
+            <tr>
+                <td>@paper.Title</td>
+                <td>@paper.Abstract</td>
+                <td>@paper.Keywords</td>
+                <td>
+                    <button>
+                        <a asp-controller="Paper" asp-action="Download" asp-route-id="@paper.Id">Download</a>
+                    </button>
+                </td>
+                <td>
+                    <button>
+                        <a asp-controller="Paper" asp-action="Review" asp-route-id="@paper.Id">Review</a>
+                    </button>
+            </tr>
+        }
+    </table>
+</div>
