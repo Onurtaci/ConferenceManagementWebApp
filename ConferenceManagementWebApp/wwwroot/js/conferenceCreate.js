@@ -37,11 +37,13 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="input-box">
                 <label for="sessionTitle${i}" class="label">Title</label>
                 <input type="text" id="sessionTitle${i}" class="input-field" required>
+                <span asp-validation-for="Title" class="text-danger"></span>
           </div>
 
           <div class="input-box">
                 <label for="sessionTopic${i}" class="label">Topic</label>
                 <input type="text" id="sessionTopic${i}" class="input-field" required>
+                <span asp-validation-for="Topic" class="text-danger"></span>
           </div>
 
           <div class="input-box">
@@ -50,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <option value="" disabled selected>Select a presentation type</option>
                 ${presentationTypes.map(type => `<option value="${type.Id}">${type.Name}</option>`).join('')}
                 </select>
+                <span asp-validation-for="PresentationType" class="text-danger"></span>
         </div>
   
           <div class="input-box">
@@ -63,11 +66,13 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="input-box">
             <label for="startTime${i}" class="label">Start Time</label>
             <input type="datetime-local" id="startTime${i}" class="input-field" required>
+            <span asp-validation-for="StartTime" class="text-danger"></span>
           </div>
   
           <div class="input-box">
             <label for="endTime${i}" class="label">End Time</label>
             <input type="datetime-local" id="endTime${i}" class="input-field">
+            <span asp-validation-for="EndTime" class="text-danger"></span>
           </div>
         `;
             sessionsDiv.appendChild(sessionDiv);

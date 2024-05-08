@@ -29,40 +29,47 @@
         <div class="input-box">
             <label for="Title">Title</label>
             <input asp-for="Title" class="input-field" placeholder="Title" />
+            <span asp-validation-for="Title" class="text-danger"></span>
         </div>
         <div class="input-box">
             <label for="Description">Description</label>
             <textarea asp-for="Description" class="input-field" placeholder="Description"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
         </div>
         <div class="input-box">
             <label for="Venue">Venue</label>
             <input asp-for="Venue" class="input-field" placeholder="Venue" />
+            <span asp-validation-for="Venue" class="text-danger"></span>
         </div>
         <div class="input-box">
-            <label for="startDate">Start Time</label>
+            <label for="startDate">Start Date</label>
             <input asp-for="StartDate" type="datetime-local" class="input-field" id="startDate" />
+            <span asp-validation-for="StartDate" class="text-danger"></span>
         </div>
         <div class="input-box">
-            <label for="endDate">End Time</label>
+            <label for="endDate">End Date</label>
             <input asp-for="EndDate" type="datetime-local" class="input-field" id="endDate" />
+            <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+        <div>
+            <label class="label">Choose Reviewers</label>
+            <div class="custom-select" id="custom-select">
+                <div class="select-header" id="select-header">
+                    <span class="reviewer-span">Choose Reviewers</span>
+                    <div class="arrow"></div>
+                </div>
+                <div class="select-options" id="select">
+                    @foreach (var reviewer in Model.AllReviewers)
+                    {
+                        <div class="option">
+                            <input type="checkbox" id="@("reviewer_" + reviewer.Id)" name="@("reviewer_" + reviewer.Id)" value="@reviewer.Id">
+                            <label for="@("reviewer_" + reviewer.Id)">@reviewer.FirstName @reviewer.LastName</label>
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
 
-        <label class="label">Choose Reviewers</label>
-        <div class="custom-select" id="custom-select">
-            <div class="select-header" id="select-header">
-                <span>Choose Reviewers</span>
-                <div class="arrow"></div>
-            </div>
-            <div class="select-options" id="select">
-                @foreach (var reviewer in Model.AllReviewers)
-                {
-                    <div class="option">
-                        <input type="checkbox" id="@("reviewer_" + reviewer.Id)" name="@("reviewer_" + reviewer.Id)" value="@reviewer.Id">
-                        <label for="@("reviewer_" + reviewer.Id)">@reviewer.FirstName @reviewer.LastName</label>
-                    </div>
-                }
-            </div>
-        </div>
 
         <div class="input-box">
             <label for="sessionCount" class="label">Number Of Sessions</label>

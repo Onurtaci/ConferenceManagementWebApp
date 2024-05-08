@@ -6,15 +6,13 @@ body {
     min-height: 100vh;
 }
 
-.organize-box{
+.organize-box {
     display: flex;
-    justify-content: center;
     flex-direction: column;
     width: 650px;
     height: auto;
     padding: 30px;
-    margin-top: 2%;
-    margin-bottom: 80px;
+    margin-top: 8%;
 }
 
 .organize-header{
@@ -135,7 +133,7 @@ body {
     background-color: #f1f1f1;
 }
 
-span {
+.custom-select .select-header .reviewer-span {
     display: inline-block;
     font-weight: 500;
     font-size: 14px;

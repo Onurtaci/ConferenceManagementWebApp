@@ -47,7 +47,7 @@ public static class Messages
     public const string RoleRequired = "Select a role! It can be 'Organizer', 'Presenter', 'Reviewer', 'Attendee'";
     public const string VenueRequired = "Enter a venue! For example, 'Online' or 'Room 101'";
     public const string AbstractRequired = "Enter an abstract! For example, 'This session will cover...'";
-    public const string KeywordsRequired = "Enter keywords! For example, 'Machine Learning, Data Science'";
+    public const string KeywordsRequired = "Enter keywords! For example, 'Deep Learning, GAN'";
     public const string FileRequired = "Upload a file!";
     public const string OrganizerRequired = "Organizer name is required!";
     public const string PresenterRequired = "Presenter name is required!";
@@ -94,4 +94,6 @@ public static class Messages
     public const string RoleInvalid = "Invalid role! It can be 'Organizer', 'Presenter', 'Reviewer', 'Attendee'";
     public const string StatusInvalid = "Invalid status! It can be 'Submitted', 'Under_Review', 'Accepted', 'Rejected'";
     public const string SessionTypeInvalid = "Invalid session type! It can be 'Oral', 'Poster', 'Workshop', Other";
+
+    public const string ReviewersDoNotSelected = "Reviewers not selected!";
 }

@@ -25,23 +25,28 @@
     </div>
     <form asp-action="Register" asp-controller="Account" method="post">
         <div class="input-box">
-            <input asp-for="FirstName" class="input-field" placeholder="First Name"/>
+            <input asp-for="FirstName" class="input-field" placeholder="First Name" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
         <div class="input-box">
-            <input asp-for="LastName" class="input-field" placeholder="Last Name"/>
+            <input asp-for="LastName" class="input-field" placeholder="Last Name" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
         <div class="input-box">
-            <input asp-for="Username" class="input-field" placeholder="Username"/>
+            <input asp-for="Username" class="input-field" placeholder="Username" />
+            <span asp-validation-for="Username" class="text-danger"></span>
         </div>
         <div class="input-box">
-            <input asp-for="Email" class="input-field" placeholder="Email"/>
+            <input asp-for="Email" class="input-field" placeholder="Email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="input-box">
-            <input asp-for="Password" class="input-field" placeholder="Password"/>
+            <input asp-for="Password" class="input-field" placeholder="Password" />
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <div class="input-box">
-            <input asp-for="ConfirmPassword" class="input-field" placeholder="Confirm Password"/>
+            <input asp-for="ConfirmPassword" class="input-field" placeholder="Confirm Password" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
         <div class="input-box">
             <select asp-for="Role" class="input-field">
@@ -51,6 +56,7 @@
                     <option value="@role">@role</option>
                 }
             </select>
+            <span asp-validation-for="Role" class="text-danger"></span>
         </div>
         <div class="input-submit">
             <button class="submit-btn" id="submit"></button>

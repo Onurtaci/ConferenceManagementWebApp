@@ -48,7 +48,9 @@
                 <td>@session.EndTime</td>
                 @if (User.IsInRole("Author"))
                 {
-                    <td><a asp-controller="Paper" asp-action="Create" asp-route-sessionId="@session.SessionId">Add Paper</a></td>
+                    <td>
+                        <button><a asp-controller="Paper" asp-action="Create" asp-route-sessionId="@session.SessionId">Add Paper</a></button>
+                    </td>
                 }
 
             </tr>

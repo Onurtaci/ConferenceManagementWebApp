@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="~/css/base.css">
 <title>Login</title>
 
-
 <header class="header">
     <a asp-controller="Home" asp-action="Index" class="logo">Conference Management System</a>
     <nav class="navbar">
@@ -29,6 +28,7 @@
         </div>
         <div class="input-box">
             <input asp-for="Password" class="input-field" placeholder="Password ">
+            <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <div class="forgot">
             <section>

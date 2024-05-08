@@ -8,11 +8,11 @@ body {
 
 .login-box {
     display: flex;
-    justify-content: center;
     flex-direction: column;
     width: 440px;
-    height: 480px;
+    height: auto;
     padding: 30px;
+    margin-top: 55px;
 }
 
 .login-header {
@@ -119,3 +119,5 @@ section a {
     color: #000;
     font-weight: 600;
 }
+
+

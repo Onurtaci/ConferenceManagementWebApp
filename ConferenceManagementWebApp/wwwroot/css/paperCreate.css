@@ -7,10 +7,9 @@
 
 .review-box {
     display: flex;
-    justify-content: center;
     flex-direction: column;
     width: 550px;
-    height: 480px;
+    height: auto;
     padding: 30px;
     margin-top: 170px;
 }

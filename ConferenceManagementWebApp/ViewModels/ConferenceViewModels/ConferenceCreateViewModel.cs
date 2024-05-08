@@ -32,6 +32,7 @@ public class ConferenceCreateViewModel
     [Compare(nameof(StartDate), ErrorMessage = Messages.StartDateBeforeEndDate)]
     public DateTime EndDate { get; set; }
 
+    [Required (ErrorMessage = Messages.ReviewersDoNotSelected)]
     public List<ApplicationUser> AllReviewers { get; set; }
 
     public List<string> SelectedReviewers { get; set; }
