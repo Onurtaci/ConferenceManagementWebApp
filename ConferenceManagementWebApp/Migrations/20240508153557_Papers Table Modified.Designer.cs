@@ -4,6 +4,7 @@ using ConferenceManagementWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConferenceManagementWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240508153557_Papers Table Modified")]
+    partial class PapersTableModified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,12 +223,12 @@ namespace ConferenceManagementWebApp.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("ReceiverId")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReceiverId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Notifications", (string)null);
                 });
@@ -286,7 +289,7 @@ namespace ConferenceManagementWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Recommendation")
+                    b.Property<int?>("Recommendation")
                         .HasMaxLength(50)
                         .HasColumnType("int");
 
@@ -552,11 +555,11 @@ namespace ConferenceManagementWebApp.Migrations
 
             modelBuilder.Entity("ConferenceManagementWebApp.Models.Notification", b =>
                 {
-                    b.HasOne("ConferenceManagementWebApp.Models.ApplicationUser", "Receiver")
+                    b.HasOne("ConferenceManagementWebApp.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("ReceiverId");
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("Receiver");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ConferenceManagementWebApp.Models.Paper", b =>

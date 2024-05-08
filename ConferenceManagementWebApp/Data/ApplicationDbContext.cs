@@ -89,7 +89,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.Id).IsRequired();
             entity.Property(e => e.Message).HasMaxLength(500);
             entity.Property(e => e.CreationDate).IsRequired();
-            entity.HasOne(e => e.User);
+
         });
 
         modelBuilder.Entity<ConferenceAttendee>(entity =>

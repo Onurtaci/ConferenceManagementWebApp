@@ -79,11 +79,11 @@ public class TestDbContext : IdentityDbContext<ApplicationUser>
             entity.ToTable("Reviews");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).IsRequired();
-            entity.Property(e => e.Recommendation).IsRequired();
+            entity.Property(e => e.Score);
             entity.Property(e => e.Recommendation).HasMaxLength(50);
             entity.Property(e => e.Comment).HasMaxLength(500);
-            entity.HasOne(e => e.Paper).WithOne(e => e.Review).OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(e => e.Reviewer);
+            entity.HasOne(e => e.Paper).WithOne(e => e.Review).OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Notification>(entity =>
@@ -93,7 +93,7 @@ public class TestDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.Id).IsRequired();
             entity.Property(e => e.Message).HasMaxLength(500);
             entity.Property(e => e.CreationDate).IsRequired();
-            entity.HasOne(e => e.User);
+
         });
 
         modelBuilder.Entity<ConferenceAttendee>(entity =>

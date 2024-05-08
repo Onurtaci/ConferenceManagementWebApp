@@ -23,15 +23,14 @@ public class Paper
     [StringLength(50, ErrorMessage = Messages.KeywordsMaxLength)]
     public string Keywords { get; set; }
 
-    [NotMapped] // db will not contain File
+    [NotMapped] // db will not contain File    
     public IFormFile File { get; set; }
 
     [Required(ErrorMessage = Messages.FileRequired)]
     public byte[] FileBytes { get; set; }
 
-    [Required]
-    [EnumDataType(typeof(Status), ErrorMessage = Messages.StatusInvalid)]
-    public Status Status { get; set; }
+    [EnumDataType(typeof(Recommendation), ErrorMessage = Messages.RecommendationRequired)]
+    public Recommendation Recommendation { get; set; }
 
     public Session Session { get; set; }
 

@@ -1,11 +1,11 @@
 ﻿using ConferenceManagementWebApp.Data;
+using ConferenceManagementWebApp.Enums;
 using ConferenceManagementWebApp.Models;
 using ConferenceManagementWebApp.ViewModels.PaperViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 
 namespace ConferenceManagementWebApp.Controllers;
 
@@ -26,9 +26,14 @@ public class PaperController : Controller
     public async Task<IActionResult> Create(string sessionId)
     {
         var user = await _userManager.GetUserAsync(User);
-        if (user == null)
+
+        var conference = _context.Conferences
+            .Include(c => c.Sessions)
+            .FirstOrDefault(c => c.Sessions.Any(s => s.Id == sessionId));
+
+        if (await _context.ConferenceAttendees.AnyAsync(ca => ca.ConferenceId == conference.Id && ca.AttendeeId == user.Id) == false)
         {
-            return NotFound();
+            return RedirectToAction("List", "Session", routeValues: new { conferenceId = conference.Id });
         }
 
         var session = _context.Sessions.Find(sessionId);
@@ -49,16 +54,12 @@ public class PaperController : Controller
     [Authorize(Roles = "Author")]
     public async Task<IActionResult> Create(PaperCreateViewModel model)
     {
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid || !IsPdf(model.File))
         {
             return View(model);
         }
 
         var user = await _userManager.GetUserAsync(User);
-        if (user == null)
-        {
-            return NotFound();
-        }
 
         var session = _context.Sessions.Find(model.SessionId);
         if (session == null)
@@ -72,6 +73,7 @@ public class PaperController : Controller
             Title = model.Title,
             Abstract = model.Abstract,
             Keywords = model.Keywords,
+            Recommendation = Recommendation.None,
             Session = session,
             Author = user
         };
@@ -86,17 +88,6 @@ public class PaperController : Controller
         _context.Papers.Add(paper);
         await _context.SaveChangesAsync();
 
-        var notification = new Notification
-        {
-            Id = Guid.NewGuid().ToString(),
-            Message = $"Paper {paper.Title} has been submitted",
-            CreationDate = DateTime.Now,
-            User = user
-        };
-
-        _context.Notifications.Add(notification);
-        await _context.SaveChangesAsync();
-
         var review = new Review
         {
             Id = Guid.NewGuid().ToString(),
@@ -109,6 +100,39 @@ public class PaperController : Controller
         await _context.SaveChangesAsync();
 
         return RedirectToAction("Index", "Home");
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "Author")]
+    public async Task<IActionResult> ListPaperReviews()
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        var papers = _context.Papers
+            .Include(p => p.Session)
+            .Include(p => p.Review)
+            .Where(p => p.Author.Id == user.Id)
+            .ToList();
+
+        var model = new List<PaperListReviewedViewModel>();
+
+        foreach (var paper in papers)
+        {
+            if (paper.Recommendation == Recommendation.None)
+            {
+                continue;
+            }
+
+            model.Add(new PaperListReviewedViewModel
+            {
+                Title = paper.Title,
+                Score = paper.Review.Score,
+                Comment = paper.Review.Comment,
+                Recommendation = paper.Review.Recommendation
+            });
+        }
+
+        return View(model);
     }
 
     [HttpGet]
@@ -138,7 +162,8 @@ public class PaperController : Controller
                 SessionId = review.Paper.Session.Id,
                 Title = review.Paper.Title,
                 Abstract = review.Paper.Abstract,
-                Keywords = review.Paper.Keywords
+                Keywords = review.Paper.Keywords,
+                Recommendation = review.Recommendation
             });
         }
 
@@ -189,16 +214,13 @@ public class PaperController : Controller
         }
 
         var user = await _userManager.GetUserAsync(User);
-        if (user == null)
-        {
-            return NotFound();
-        }
 
-        var paper = _context.Papers.Find(model.PaperId);
-        if (paper == null)
-        {
-            return NotFound();
-        }
+        var paper = _context.Papers.Include(p => p.Author).FirstOrDefault(p => p.Id == model.PaperId);
+
+        paper.Recommendation = model.Recommendation;
+
+        _context.Papers.Update(paper);
+        await _context.SaveChangesAsync();
 
         var review = _context.Reviews
             .Include(r => r.Paper)
@@ -216,6 +238,24 @@ public class PaperController : Controller
 
         _context.Reviews.Update(review);
         await _context.SaveChangesAsync();
+
+        paper.Recommendation = model.Recommendation;
+
+        _context.Papers.Update(paper);
+        await _context.SaveChangesAsync();
+
+        var notification = new Notification
+        {
+            Id = Guid.NewGuid().ToString(),
+            Message = $"Paper {paper.Title} has been reviewed",
+            CreationDate = DateTime.Now,
+            Receiver = paper.Author
+        };
+
+        _context.Notifications.Add(notification);
+        await _context.SaveChangesAsync();
+
+
 
         return RedirectToAction("ListAssignedPapers");
     }
@@ -235,7 +275,9 @@ public class PaperController : Controller
         return _context.Users.Find(randomReviewerId);
     }
 
-    private async Task<IActionResult> Download(string paperId)
+    [HttpGet]
+    [Authorize(Roles = "Author, Reviewer")]
+    public async Task<IActionResult> Download(string paperId)
     {
         var paper = _context.Papers.Find(paperId);
         if (paper == null)
@@ -244,5 +286,10 @@ public class PaperController : Controller
         }
 
         return File(paper.FileBytes, "application/pdf", $"{paper.Title}.pdf");
+    }
+
+    public bool IsPdf(IFormFile file)
+    {
+        return file.ContentType == "application/pdf";
     }
 }

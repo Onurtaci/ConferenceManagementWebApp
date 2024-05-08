@@ -16,5 +16,5 @@ public class Notification
     [Display(Name = "Creation Date")]
     public DateTime CreationDate { get; set; }
 
-    public ApplicationUser User { get; set; }
+    public ApplicationUser Receiver { get; set; }
 }

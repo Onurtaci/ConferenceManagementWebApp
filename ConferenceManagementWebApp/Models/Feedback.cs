@@ -11,7 +11,7 @@ public class Feedback
     public string Id { get; set; }
 
     [Required(ErrorMessage = Messages.RatingRequired)]
-    [Range(0, 5, ErrorMessage = Messages.RatingRange)]
+    [Range(1, 5, ErrorMessage = Messages.RatingRange)]
     public int Rating { get; set; }
 
     [StringLength(500, ErrorMessage = Messages.CommentMaxLength)]

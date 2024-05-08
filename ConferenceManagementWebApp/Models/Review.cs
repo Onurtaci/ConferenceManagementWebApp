@@ -17,7 +17,7 @@ public class Review
     public int? Score { get; set; }
 
     [EnumDataType(typeof(Recommendation), ErrorMessage = Messages.RecommendationInvalid)]
-    public Recommendation? Recommendation { get; set; }
+    public Recommendation Recommendation { get; set; }
 
     [Range(0, 500, ErrorMessage = Messages.CommentMaxLength)]
     public string? Comment { get; set; }

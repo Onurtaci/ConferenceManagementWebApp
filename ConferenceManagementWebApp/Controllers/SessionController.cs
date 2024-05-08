@@ -22,6 +22,8 @@ public class SessionController : Controller
 
     public async Task<IActionResult> List(string conferenceId)
     {
+        var user = await _userManager.GetUserAsync(User);
+
         var model = new List<SessionListViewModel>();
 
         var conference = await _context.Conferences

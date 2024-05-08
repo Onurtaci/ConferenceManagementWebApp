@@ -1,15 +1,15 @@
-﻿@using ConferenceManagementWebApp.Enums
-@using ConferenceManagementWebApp.ViewModels.PaperViewModels;
-@model PaperReviewViewModel;
+﻿@using ConferenceManagementWebApp.ViewModels.FeedbackViewModels;
+@model FeedbackCreateViewModel;
 
 @{
-    ViewBag.Title = "Review Paper";
+    ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <link rel="stylesheet" href="~/css/base.css">
 <link rel="stylesheet" href="~/css/paperOperations.css">
-<title>Assigned Papers</title>
+<title>Give Feedback</title>
 
 <header class="header">
     <a asp-controller="Home" asp-action="Index" class="logo">Conference Management System</a>
@@ -22,34 +22,27 @@
     </nav>
 </header>
 
-<form asp-action="Review" method="post">
+<form asp-action="Create" method="post">
     <div class="review-box">
         <div class="review-header">
-            <header>Review Paper</header>
+            <header>Gİve Feedback</header>
         </div>
         <div class="input-box">
             <label for="Score">Score</label>
-            <input asp-for="Score" class="input-field" placeholder="Score" />
-            <span asp-validation-for="Score" class="text-danger"></span>
+            <input asp-for="Rating" class="input-field" placeholder="Score" />
+            <span asp-validation-for="Rating" class="text-danger"></span>
         </div>
         <div class="input-box">
             <label for="Comment">Comment</label>
             <textarea asp-for="Comment" class="input-field" placeholder="Comment"></textarea>
             <span asp-validation-for="Comment" class="text-danger"></span>
         </div>
-        <div class="input-box">
-            <label for="Recommendation">Recommendation</label>
-            <select asp-for="Recommendation" class="input-field">
-                @for (int i = 1; i < Enum.GetValues(typeof(Recommendation)).Length; i++)
-                {
-                    <option value="@i">@Enum.GetName(typeof(Recommendation), i)</option>
-                })
-            </select>
-        </div>
         <div class="input-submit">
             <button class="submit-btn" id="submitButton"></button>
-            <label for="submitButton">Review</label>
+            <label for="submitButton">Give Feedback</label>
         </div>
-        <input hidden asp-for="PaperId" value="@Model.PaperId" />
+        <input hidden asp-for="ConferenceId" value="@Model.ConferenceId" />
+        <input hidden asp-for="UserId" value="@Model.UserId" />
     </div>
 </form>
+

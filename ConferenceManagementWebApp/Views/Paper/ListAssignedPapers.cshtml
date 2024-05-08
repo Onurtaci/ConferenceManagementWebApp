@@ -1,4 +1,5 @@
 ﻿@using ConferenceManagementWebApp.ViewModels.PaperViewModels;
+@using ConferenceManagementWebApp.Enums;
 @model List<PaperListAssignedViewModel>;
 
 @{
@@ -40,13 +41,20 @@
                 <td>@paper.Keywords</td>
                 <td>
                     <button>
-                        <a asp-controller="Paper" asp-action="Download" asp-route-id="@paper.Id">Download</a>
+                        <a asp-controller="Paper" asp-action="Download" asp-route-paperId="@paper.Id">Download</a>
                     </button>
                 </td>
                 <td>
-                    <button>
-                        <a asp-controller="Paper" asp-action="Review" asp-route-id="@paper.Id">Review</a>
-                    </button>
+                    @if (paper.Recommendation == Recommendation.None)
+                    {
+                        <button>
+                            <a asp-controller="Paper" asp-action="Review" asp-route-paperId="@paper.Id">Review</a>
+                        </button>
+                    }
+                    else
+                    {
+                        <span>Reviewed</span>
+                    }
             </tr>
         }
     </table>
