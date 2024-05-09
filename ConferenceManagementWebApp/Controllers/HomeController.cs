@@ -41,7 +41,12 @@ public class HomeController : Controller
         }
     }
 
-    public IActionResult Privacy()
+    public IActionResult Search()
+    {
+        return View();
+    }
+
+    public IActionResult Notifications()
     {
         return View();
     }

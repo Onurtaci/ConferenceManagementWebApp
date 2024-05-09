@@ -6,26 +6,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 <link rel="stylesheet" href="~/css/base.css">
 <link rel="stylesheet" href="~/css/paperOperations.css">
 <title>Give Feedback</title>
 
-<header class="header">
-    <a asp-controller="Home" asp-action="Index" class="logo">Conference Management System</a>
-    <nav class="navbar">
-        <a asp-controller="Home" asp-action="Index">Home</a>
-        <a asp-controller="Home" asp-action="Search">Search</a>
-        <a asp-controller="Home" asp-action="Notifications">Notifications</a>
-        <a asp-controller="Home" asp-action="Profile">Profile</a>
-        <a asp-controller="Account" asp-action="Logout">Logout</a>
-    </nav>
-</header>
-
 <form asp-action="Create" method="post">
     <div class="review-box">
         <div class="review-header">
-            <header>Gİve Feedback</header>
+            <header>Give Feedback</header>
         </div>
         <div class="input-box">
             <label for="Score">Score</label>

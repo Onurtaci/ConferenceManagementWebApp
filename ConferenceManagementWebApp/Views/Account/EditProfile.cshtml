@@ -1,0 +1,47 @@
+﻿@using ConferenceManagementWebApp.ViewModels.AccountViewModels;
+@model AccountEditProfileViewModel;
+
+@{
+    ViewBag.Title = "Edit Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/base.css">
+<link rel="stylesheet" href="~/css/paperOperations.css">
+<title>Edit Profile</title>
+
+<form asp-action="EditProfile" method="post">
+    <div class="review-box">
+        <div class="review-header">
+            <header>Edit Profile</header>
+        </div>
+        <div class="input-box">
+            <label for="FirstName">First Name</label>
+            <input asp-for="FirstName" class="input-field" placeholder="First Name" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="input-box">
+            <label for="LastName">Last Name</label>
+            <input asp-for="LastName" class="input-field" placeholder="Last Name" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="input-box">
+            <label for="Email">Email</label>
+            <input asp-for="Email" class="input-field" placeholder="Email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="input-box">
+            <label for="Username">Username</label>
+            <input asp-for="Username" class="input-field" placeholder="Username" />
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </div>
+        <div class="input-submit">
+            <button class="submit-btn" id="submitButton"></button>
+            <label for="submitButton">Edit Profile</label>
+        </div>
+        <div>
+            <input asp-for="Id" type="hidden" value="@Model.Id" />
+        </div>
+    </div>
+</form>
+

@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Folder Include="ViewModels\ReviewViewModels\" />
+    <Folder Include="Views\User\" />
   </ItemGroup>
 
   <ItemGroup>
