@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ConferenceManagementWebApp.Controllers;
 
@@ -56,6 +57,7 @@ public class PaperController : Controller
     {
         if (!ModelState.IsValid || !IsPdf(model.File))
         {
+            ModelState.AddModelError("File", "Please upload a PDF file");
             return View(model);
         }
 
@@ -83,6 +85,10 @@ public class PaperController : Controller
             using var memoryStream = new MemoryStream();
             await model.File.CopyToAsync(memoryStream);
             paper.FileBytes = memoryStream.ToArray();
+        }
+        else
+        {
+            return NotFound();
         }
 
         _context.Papers.Add(paper);

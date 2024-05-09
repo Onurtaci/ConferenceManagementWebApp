@@ -29,7 +29,6 @@ public class ConferenceCreateViewModel
     [Required(ErrorMessage = Messages.EndDateRequired)]
     [DataType(DataType.DateTime)]
     [Display(Name = "End Date")]
-    [Compare(nameof(StartDate), ErrorMessage = Messages.StartDateBeforeEndDate)]
     public DateTime EndDate { get; set; }
 
     [Required (ErrorMessage = Messages.ReviewersDoNotSelected)]
