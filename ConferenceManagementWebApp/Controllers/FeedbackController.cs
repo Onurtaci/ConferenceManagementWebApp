@@ -41,6 +41,7 @@ namespace ConferenceManagementWebApp.Controllers
 
             var feedback = new Feedback
             {
+                Id = Guid.NewGuid().ToString(),
                 Conference = _context.Conferences.Find(model.ConferenceId),
                 Attendee = await _userManager.FindByIdAsync(model.UserId),
                 Rating = model.Rating,

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Account\ForgetPassword.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\css\organizerhomepage.css" />
     <_ContentIncludedByDefault Remove="wwwroot\css\Register.css" />
   </ItemGroup>
@@ -34,6 +35,14 @@
 
   <ItemGroup>
     <Content Remove="Views\Home\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Account\ForgetPassword.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Account\ForgetPassword.cshtml" />
   </ItemGroup>
 
 </Project>
