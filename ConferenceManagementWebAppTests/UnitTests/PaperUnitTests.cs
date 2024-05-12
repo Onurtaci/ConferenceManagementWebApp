@@ -58,7 +58,6 @@ public class PaperUnitTests : IDisposable
     {
         // Arrange
         var sessionId = Guid.NewGuid().ToString();
-
         var conference = new Conference
         {
             Id = Guid.NewGuid().ToString(),

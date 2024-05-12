@@ -4,34 +4,33 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ConferenceManagementWebApp.Controllers
-{
-    public class UserController : Controller
-    {
-        private readonly UserManager<ApplicationUser> _userManager;
+namespace ConferenceManagementWebApp.Controllers;
 
-        public UserController(UserManager<ApplicationUser> userManager)
+public class UserController : Controller
+{
+    private readonly UserManager<ApplicationUser> _userManager;
+
+    public UserController(UserManager<ApplicationUser> userManager)
+    {
+        _userManager = userManager;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetUsersByRole(string roleName)
+    {
+        if (string.IsNullOrEmpty(roleName))
         {
-            _userManager = userManager;
+            return BadRequest("Role name cannot be null or empty.");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetUsersByRole(string roleName)
+        try
         {
-            if (string.IsNullOrEmpty(roleName))
-            {
-                return BadRequest("Role name cannot be null or empty.");
-            }
-
-            try
-            {
-                var users = await _userManager.GetUsersInRoleAsync(roleName);
-                return Ok(users); // Return users with 200 OK status
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "An error occurred while retrieving users.");
-            }
+            var users = await _userManager.GetUsersInRoleAsync(roleName);
+            return Ok(users); // Return users with 200 OK status
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "An error occurred while retrieving users.");
         }
     }
 }

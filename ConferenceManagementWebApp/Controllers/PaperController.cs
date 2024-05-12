@@ -1,4 +1,5 @@
-﻿using ConferenceManagementWebApp.Data;
+﻿using ConferenceManagementWebApp.Constants;
+using ConferenceManagementWebApp.Data;
 using ConferenceManagementWebApp.Enums;
 using ConferenceManagementWebApp.Models;
 using ConferenceManagementWebApp.ViewModels.PaperViewModels;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ConferenceManagementWebApp.Controllers;
 
@@ -57,7 +57,7 @@ public class PaperController : Controller
     {
         if (!ModelState.IsValid || !IsPdf(model.File))
         {
-            ModelState.AddModelError("File", "Please upload a PDF file");
+            ModelState.AddModelError("File", Messages.FileTypeInvalid);
             return View(model);
         }
 
@@ -65,9 +65,7 @@ public class PaperController : Controller
 
         var session = _context.Sessions.Find(model.SessionId);
         if (session == null)
-        {
-            return NotFound();
-        }
+        { return NotFound(); }
 
         var paper = new Paper
         {
@@ -87,9 +85,7 @@ public class PaperController : Controller
             paper.FileBytes = memoryStream.ToArray();
         }
         else
-        {
-            return NotFound();
-        }
+        { return NotFound(); }
 
         _context.Papers.Add(paper);
         await _context.SaveChangesAsync();

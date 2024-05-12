@@ -8,7 +8,6 @@ using ConferenceManagementWebApp.ViewModels.UserViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -45,6 +44,8 @@ public class ConferenceController : Controller
     [Authorize(Roles = "Organizer")]
     public async Task<IActionResult> Create(ConferenceCreateViewModel model)
     {
+        model.AllReviewers = (List<ApplicationUser>)await _userManager.GetUsersInRoleAsync("Reviewer");
+        model.AllPresenters = (List<ApplicationUser>)await _userManager.GetUsersInRoleAsync("Presenter");
         if (ModelState.IsValid)
         {
             var conference = new Conference
@@ -117,18 +118,16 @@ public class ConferenceController : Controller
             else
             {
                 ModelState.AddModelError(string.Empty, Messages.ConferenceNotCreated);
+                _context.Conferences.Remove(conference);
+                _context.ConferenceReviewers.RemoveRange(conference.ConferenceReviewers);
+                await _context.SaveChangesAsync();
                 return View(model);
             }
 
             return RedirectToAction("Index", "Home");
         }
 
-        var allReviewers = await _userManager.GetUsersInRoleAsync("Reviewer");
-        var allPresenters = await _userManager.GetUsersInRoleAsync("Presenter");
-
-        model.AllReviewers = allReviewers.ToList();
-        model.AllPresenters = allPresenters.ToList();
-
+        ModelState.AddModelError(string.Empty, Messages.ConferenceNotCreated);
         return View(model);
     }
 

@@ -1,13 +1,12 @@
-﻿namespace ConferenceManagementWebApp.ViewModels.UserViewModels
+﻿namespace ConferenceManagementWebApp.ViewModels.UserViewModels;
+
+public class UserListViewModel
 {
-    public class UserListViewModel
-    {
-        public string FirstName { get; set; }
+    public string FirstName { get; set; }
 
-        public string LastName { get; set; }
+    public string LastName { get; set; }
 
-        public string UserName { get; set; }
+    public string UserName { get; set; }
 
-        public string Email { get; set; }
-    }
+    public string Email { get; set; }
 }

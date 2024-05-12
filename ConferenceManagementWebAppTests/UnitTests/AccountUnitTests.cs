@@ -48,7 +48,8 @@ public class AccountUnitTests : IDisposable
             RememberMe = false
         };
 
-        A.CallTo(() => _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false))
+        A.CallTo(() => _signInManager
+            .PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false))
             .Returns(Microsoft.AspNetCore.Identity.SignInResult.Success);
 
         // Act
@@ -69,7 +70,8 @@ public class AccountUnitTests : IDisposable
             RememberMe = false
         };
 
-        A.CallTo(() => _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false))
+        A.CallTo(() => _signInManager
+            .PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false))
             .Returns(Microsoft.AspNetCore.Identity.SignInResult.Failed);
 
         // Act
